@@ -33,6 +33,7 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/libs/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
 
     <!-- Page CSS -->
 
@@ -115,6 +116,15 @@
                             <div data-i18n="Dashboards">Dashboards</div>
                         </a>
                     </li>
+
+                    <li class="menu-item">
+                        <a href="{{ route('users.index') }}"class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-envelope"></i>
+                            <div data-i18n="Email">Data</div>
+                        </a>
+                    </li>
+                    <hr>
+
                     <li class="menu-item">
                         <a href="{{ route('bimbingan.index') }}"class="menu-link">
                             <i class="menu-icon tf-icons bx bx-envelope"></i>
@@ -122,8 +132,7 @@
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-chat.html"
-                            target="_blank" class="menu-link">
+                        <a href="{{ route('bimbingan.index') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-chat"></i>
                             <div data-i18n="Chat">Bimbingan</div>
                         </a>
@@ -134,6 +143,22 @@
                             <div data-i18n="Kanban">Riwayat Bimbingan</div>
                         </a>
                     </li>
+
+                    <hr>
+
+                    <li class="menu-item">
+                        <a href="{{ route('pesan.index') }}"class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-grid"></i>
+                            <div data-i18n="Kanban"> Pesan</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="{{ route('bimbingan.index') }}"class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-grid"></i>
+                            <div data-i18n="Kanban"> Profile</div>
+                        </a>
+                    </li>
+
                 </ul>
             </aside>
             <!-- / Menu -->
@@ -258,7 +283,14 @@
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
 
+
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js ') }}"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.datatable').DataTable();
+        });
+    </script>
     <script src="{{ asset('assets') }}/vendor/libs/popper/popper.js"></script>
     <script src="{{ asset('assets') }}/vendor/js/bootstrap.js"></script>
     <script src="{{ asset('assets') }}/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>

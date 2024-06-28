@@ -5,8 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BimbinganController;
+use App\Http\Controllers\PesanController;
 use App\Http\Controllers\RiwayatController;
-use Symfony\Component\HttpKernel\Profiler\Profile;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('bimbingan', BimbinganController::class);
 Route::resource('profile', ProfileController::class);
 Route::resource('riwayat', RiwayatController::class);
+Route::resource('users', UserController::class);
+Route::resource('pesan', PesanController::class);
