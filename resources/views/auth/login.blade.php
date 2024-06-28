@@ -258,7 +258,7 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <!-- Page JS -->
-    <script src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/js/pages-auth.js></script>
+    <script src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/js/pages-auth.js"></script>
     </body>
 
 </html>

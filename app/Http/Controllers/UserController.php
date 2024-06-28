@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
+use App\Models\Pembimbing;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -11,8 +13,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('lno.data.index');
-    }
+        $mahasiswas = Mahasiswa::all();
+        $pembimbings = Pembimbing::all();
+        $totalMahasiswa = $mahasiswas->count();
+        return view('lno.data.index', compact('mahasiswas', 'totalMahasiswa','pembimbings'));    }
 
     /**
      * Show the form for creating a new resource.
