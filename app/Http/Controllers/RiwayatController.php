@@ -3,18 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\BimbinganSkripsi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RiwayatController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+   
     public function index()
     {
-        return view('mahasiswa.riwayat.index');
+        $mahasiswaId = Auth::user()->mahasiswa->id;
+        $bimbingan = BimbinganSkripsi::where('mahasiswa_id', $mahasiswaId)->with('mahasiswa.user')->get();
+       
+        return view('mahasiswa.riwayat.index', compact('bimbingan'));
     }
-
     /**
      * Show the form for creating a new resource.
      */

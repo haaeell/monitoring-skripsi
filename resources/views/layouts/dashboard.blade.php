@@ -110,56 +110,61 @@
 
                 <ul class="menu-inner py-1">
                     <!-- Apps -->
-                    <li class="menu-item active open">
-                        <a href="javascript:void(0);" class="menu-link ">
-                            <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                    <li class="menu-item {{ request()->is('home') ? 'active' : '' }}">
+                        <a href="{{ route('home') }}" class="menu-link">
+                            <i class="menu-icon bx bx-home-circle"></i>
                             <div data-i18n="Dashboards">Dashboards</div>
                         </a>
                     </li>
-
-                    <li class="menu-item">
-                        <a href="{{ route('users.index') }}"class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-envelope"></i>
-                            <div data-i18n="Email">Data</div>
+                
+                    @if (Auth::user()->role == 'lno')
+                        <li class="menu-item {{ request()->is('users*') ? 'active' : '' }}">
+                            <a href="{{ route('users.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-envelope"></i>
+                                <div data-i18n="Email">Data</div>
+                            </a>
+                        </li>
+                    @endif
+                
+                    @if (Auth::user()->role == 'lno' || Auth::user()->role == 'pembimbing')
+                        <li class="menu-item {{ request()->is('bimbingan*') ? 'active' : '' }}">
+                            <a href="{{ route('bimbingan.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-group"></i>
+                                <div data-i18n="Mahasiswa Bimbingan">Mahasiswa Bimbingan</div>
+                            </a>
+                        </li>
+                    @endif
+                
+                    <li class="menu-item {{ request()->is('bimbingan-skripsi*') ? 'active' : '' }}">
+                        <a href="{{ route('bimbingan-skripsi.index') }}" class="menu-link">
+                            <i class="menu-icon bx bx-chat"></i>
+                            <div data-i18n="Chat">Bimbingan Skripsi</div>
                         </a>
                     </li>
-                    <hr>
-
-                    <li class="menu-item">
-                        <a href="{{ route('bimbingan.index') }}"class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-envelope"></i>
-                            <div data-i18n="Email">Mahasiswa Bimbingan</div>
+                
+                    @if (Auth::user()->role == 'mhs')
+                        <li class="menu-item {{ request()->is('pesan*') ? 'active' : '' }}">
+                            <a href="{{ route('pesan.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-message"></i>
+                                <div data-i18n="Pesan">Pesan</div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ request()->is('riwayat*') ? 'active' : '' }}">
+                            <a href="{{ route('riwayat.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-history"></i>
+                                <div data-i18n="Riwayat Bimbingan">Riwayat Bimbingan</div>
+                            </a>
+                        </li>
+                    @endif
+                
+                    <li class="menu-item {{ request()->is('profile*') ? 'active' : '' }}">
+                        <a href="{{ route('profile.index') }}" class="menu-link">
+                            <i class="menu-icon bx bx-user"></i>
+                            <div data-i18n="Profile">Profile</div>
                         </a>
                     </li>
-                    <li class="menu-item">
-                        <a href="{{ route('bimbingan.index') }}" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-chat"></i>
-                            <div data-i18n="Chat">Bimbingan</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{ route('riwayat.index') }}"class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-grid"></i>
-                            <div data-i18n="Kanban">Riwayat Bimbingan</div>
-                        </a>
-                    </li>
-
-                    <hr>
-
-                    <li class="menu-item">
-                        <a href="{{ route('pesan.index') }}"class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-grid"></i>
-                            <div data-i18n="Kanban"> Pesan</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="{{ route('bimbingan.index') }}"class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-grid"></i>
-                            <div data-i18n="Kanban"> Profile</div>
-                        </a>
-                    </li>
-
                 </ul>
+                
             </aside>
             <!-- / Menu -->
 
@@ -268,6 +273,29 @@
                 </nav>
 
                 <div class="container">
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+        
+                @if (Session::has('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ Session::get('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+        
+                @if (Session::has('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ Session::get('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                     @yield('content')
                 </div>
             </div>

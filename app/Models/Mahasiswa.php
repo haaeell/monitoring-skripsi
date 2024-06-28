@@ -41,4 +41,8 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Pembimbing::class,'pembimbing_id');
     }
+
+    public function bimbinganSkripsi(){
+        return $this->hasMany(BimbinganSkripsi::class);
+    }
 }

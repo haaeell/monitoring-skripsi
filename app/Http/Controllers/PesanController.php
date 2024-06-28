@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BimbinganSkripsi;
+use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PesanController extends Controller
 {
@@ -11,7 +14,10 @@ class PesanController extends Controller
      */
     public function index()
     {
-        return view('mahasiswa.pesan.index');
+        $mahasiswaId = Auth::user()->mahasiswa->id;
+        $bimbingan = BimbinganSkripsi::where('mahasiswa_id', $mahasiswaId)->with('mahasiswa.user')->get();
+       
+        return view('mahasiswa.pesan.index', compact('bimbingan'));
     }
 
     /**
