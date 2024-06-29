@@ -38,3 +38,5 @@ Route::resource('pesan', PesanController::class);
 Route::resource('mahasiswa', MahasiswaController::class);
 Route::resource('pembimbing', PembimbingController::class);
 Route::resource('bimbingan-skripsi', BimbinganSkripsiController::class);
+Route::get('/cetak-pdf', [RiwayatController::class, 'cetakPdf'])->name('cetak-pdf');
+

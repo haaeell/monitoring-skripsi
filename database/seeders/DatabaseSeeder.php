@@ -14,9 +14,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'name' => 'User',
-            'email' => 'user@user.com',
-            'password' => Hash::make('password'), // Use Hash facade to hash the password
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('password'), 
+            'role' => 'lno'
         ]);
     }
 }

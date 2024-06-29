@@ -4,7 +4,7 @@
    <div class="card mt-4">
     <div class="card-header">
         <h4 class="fw-semibold m-0"> Riwayat Bimbingan Skripsi</h4>
-        <a href="" class="btn btn-primary" style="float: right">Cetak Pdf</a>
+        <a href="{{ route('cetak-pdf') }}" class="btn btn-primary" style="float: right">Cetak Pdf</a>
     </div>
     <div class="card-body">
         <div class="table-responsive">

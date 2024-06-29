@@ -17,10 +17,10 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="mahasiswa" role="tabpanel" aria-labelledby="mahasiswa-tab">
                 <div class="d-flex justify-content-between align-items-center my-3">
-                    <button class="btn btn-primary me-2" data-bs-toggle="modal"
+                    <button class="btn btn-primary text-white me-2" data-bs-toggle="modal"
                         data-bs-target="#createMahasiswaModal">Tambah Baru</button>
                     <div>
-                        {{-- <span>Total Mahasiswa: {{ $totalMahasiswa }}</span> --}}
+                        <span>Total Mahasiswa: {{ $totalMahasiswa }}</span>
                     </div>
                 </div>
                 <div class="card shadow border-0">
@@ -46,11 +46,11 @@
                                             <td>{{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}</td>
                                             <td>{{ $mahasiswa->status }}</td>
                                             <td>
-                                                <div class="d-flex">
+                                                <div class="d-flex text-white">
                                                     <a data-bs-toggle="modal" data-bs-target="#editMahasiswaModal"
-                                                        class="btn btn-sm btn-primary me-2">Edit</a>
+                                                        class="btn btn-sm btn-warning  me-2">Edit</a>
                                                     <a data-bs-toggle="modal" data-bs-target="#readMahasiswaModal"
-                                                        class="btn btn-sm btn-warning me-2">Detail</a>
+                                                        class="btn btn-sm btn-secondary me-2">Detail</a>
                                                     <form action="{{ route('mahasiswa.destroy', $mahasiswa->id) }}"
                                                         method="POST" style="display:inline-block;">
                                                         @csrf
@@ -74,41 +74,41 @@
                                                     <div class="modal-body">
                                                         <dl class="row">
                                                             <dt class="col-sm-4">NIM</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaNIM">{{ $mahasiswa->nim }}
+                                                            <dd class="col-sm-8" id="readMahasiswaNIM"> : {{ $mahasiswa->nim }}
                                                             </dd>
 
                                                             <dt class="col-sm-4">Nama</dt>
                                                             <dd class="col-sm-8" id="readMahasiswaNama">
-                                                                {{ $mahasiswa->nama }}</dd>
+                                                                : {{ $mahasiswa->nama }}</dd>
 
                                                             <dt class="col-sm-4">Angkatan</dt>
                                                             <dd class="col-sm-8" id="readMahasiswaAngkatan">
-                                                                {{ $mahasiswa->angkatan }}</dd>
+                                                                : {{ $mahasiswa->angkatan }}</dd>
 
                                                             <dt class="col-sm-4">Jenis Kelamin</dt>
                                                             <dd class="col-sm-8" id="readMahasiswaJenisKelamin">
-                                                                {{ $mahasiswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                                                : {{ $mahasiswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}
                                                             </dd>
 
                                                             <dt class="col-sm-4">Email</dt>
                                                             <dd class="col-sm-8" id="readMahasiswaEmail">
-                                                                {{ $mahasiswa->email }}</dd>
+                                                                : {{ $mahasiswa->email }}</dd>
 
                                                             <dt class="col-sm-4">Telepon</dt>
                                                             <dd class="col-sm-8" id="readMahasiswaTelp">
-                                                                {{ $mahasiswa->telp }}</dd>
+                                                                : {{ $mahasiswa->telp }}</dd>
 
                                                             <dt class="col-sm-4">Alamat</dt>
                                                             <dd class="col-sm-8" id="readMahasiswaAlamat">
-                                                                {{ $mahasiswa->alamat }}</dd>
+                                                                : {{ $mahasiswa->alamat }}</dd>
 
                                                             <dt class="col-sm-4">Judul Tugas Akhir</dt>
                                                             <dd class="col-sm-8" id="readMahasiswaJudulTA">
-                                                                {{ $mahasiswa->judul_ta }}</dd>
+                                                                : {{ $mahasiswa->judul_ta }}</dd>
 
                                                             <dt class="col-sm-4">Dosen Pembimbing</dt>
                                                             <dd class="col-sm-8">
-                                                                {{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}
+                                                                : {{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}
                                                             </dd>
                                                         </dl>
                                                     </div>
@@ -225,10 +225,10 @@
             </div>
             <div class="tab-pane fade" id="dosen" role="tabpanel" aria-labelledby="dosen-tab">
                 <div class="d-flex justify-content-between align-items-center my-3">
-                    <a class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#createPembimbingModal">Tambah
+                    <a class="btn btn-primary me-2 text-white" data-bs-toggle="modal" data-bs-target="#createPembimbingModal">Tambah
                         Baru</a>
                     <div>
-                        {{-- <span>Total Dosen: {{ $totalDosen }}</span> --}}
+                        <span>Total Dosen: {{ $totalPembimbing }}</span>
                     </div>
                 </div>
                 <div class="card shadow border-0">
@@ -249,16 +249,16 @@
                                         <tr>
                                             <td>{{ $pembimbing->nik }}</td>
                                             <td>{{ $pembimbing->nama }}</td>
-                                            <td>{{ $pembimbing->jenis_kelamin }}</td>
+                                            <td>{{ $mahasiswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                             <td>{{ $pembimbing->telp }}</td>
                                             <td>
-                                                <div class="d-flex">
+                                                <div class="d-flex text-white">
                                                     <a data-bs-toggle="modal" data-bs-target="#editPembimbingModal"
-                                                        class="btn btn-sm btn-primary me-2">Edit</a>
+                                                        class="btn btn-sm btn-warning me-2">Edit</a>
                                                     <a data-bs-toggle="modal" data-bs-target="#readPembimbingModal"
-                                                        class="btn btn-sm btn-warning me-2">Detail</a>
+                                                        class="btn btn-sm btn-secondary me-2">Detail</a>
                                                     <a data-bs-toggle="modal" data-bs-target="#deletePembimbingModal"
-                                                        class="btn btn-sm btn-warning me-2">Delete</a>
+                                                        class="btn btn-sm btn-danger me-2">Delete</a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -276,18 +276,18 @@
                                                     <div class="modal-body">
                                                         <dl class="row">
                                                             <dt class="col-sm-4">NIK</dt>
-                                                            <dd class="col-sm-8">{{ $pembimbing->nik }}</dd>
+                                                            <dd class="col-sm-8"> : {{ $pembimbing->nik }}</dd>
 
                                                             <dt class="col-sm-4">Nama</dt>
-                                                            <dd class="col-sm-8">{{ $pembimbing->nama }}</dd>
+                                                            <dd class="col-sm-8"> : {{ $pembimbing->nama }}</dd>
 
                                                             <dt class="col-sm-4">Jenis Kelamin</dt>
-                                                            <dd class="col-sm-8">
+                                                            <dd class="col-sm-8"> : 
                                                                 {{ $pembimbing->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
                                                             </dd>
 
                                                             <dt class="col-sm-4">Telepon</dt>
-                                                            <dd class="col-sm-8">{{ $pembimbing->telp }}</dd>
+                                                            <dd class="col-sm-8"> : {{ $pembimbing->telp }}</dd>
                                                         </dl>
                                                     </div>
                                                     <div class="modal-footer">

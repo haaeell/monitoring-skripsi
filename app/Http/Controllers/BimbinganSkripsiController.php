@@ -4,16 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Models\BimbinganSkripsi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BimbinganSkripsiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $bimbinganSkripsi = BimbinganSkripsi::with('mahasiswa')->get();
-        return view('bimbingan_skripsi.index', compact('bimbinganSkripsi'));
+        $user = Auth::user();
+
+        if ($user->role == 'mhs') {
+
+            $bimbinganSkripsi = BimbinganSkripsi::with('mahasiswa')->get();
+            return view('bimbingan_skripsi.index', compact('bimbinganSkripsi'));
+
+        } else {
+
+            $pembimbing = $user->pembimbing;
+            $mahasiswas = $pembimbing->mahasiswa()->get();
+
+            $bimbinganSkripsi = null;
+            if ($request->has('mahasiswa_id')) {
+                $mahasiswa_id = $request->input('mahasiswa_id');
+                $bimbinganSkripsi = BimbinganSkripsi::where('mahasiswa_id', $mahasiswa_id)->with('mahasiswa')->get();
+            }
+
+            return view('bimbingan_skripsi.index', compact('mahasiswas', 'bimbinganSkripsi'));
+        }
     }
 
     /**
@@ -47,7 +66,7 @@ class BimbinganSkripsiController extends Controller
         return redirect()->route('bimbingan-skripsi.index')->with('success', 'Bimbingan skripsi berhasil ditambahkan.');
     }
 
-    
+
 
     /**
      * Display the specified resource.
@@ -70,15 +89,15 @@ class BimbinganSkripsiController extends Controller
      */
     public function update(Request $request, BimbinganSkripsi $bimbinganSkripsi)
     {
-       
+
         $validatedData = $request->validate([
             'pembahasan_dosen' => 'required',
         ]);
-    
+
         $bimbinganSkripsi->pembahasan_dosen = $validatedData['pembahasan_dosen'];
         $bimbinganSkripsi->status = 'sudah dibaca';
         $bimbinganSkripsi->save();
-    
+
         return redirect()->route('bimbingan-skripsi.index')->with('success', 'Pembahasan dan status bimbingan skripsi berhasil diperbarui.');
     }
 
