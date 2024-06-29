@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mt-4">
-      
+
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
@@ -74,7 +74,8 @@
                                                     <div class="modal-body">
                                                         <dl class="row">
                                                             <dt class="col-sm-4">NIM</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaNIM"> : {{ $mahasiswa->nim }}
+                                                            <dd class="col-sm-8" id="readMahasiswaNIM"> :
+                                                                {{ $mahasiswa->nim }}
                                                             </dd>
 
                                                             <dt class="col-sm-4">Nama</dt>
@@ -87,7 +88,8 @@
 
                                                             <dt class="col-sm-4">Jenis Kelamin</dt>
                                                             <dd class="col-sm-8" id="readMahasiswaJenisKelamin">
-                                                                : {{ $mahasiswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                                                :
+                                                                {{ $mahasiswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}
                                                             </dd>
 
                                                             <dt class="col-sm-4">Email</dt>
@@ -108,7 +110,8 @@
 
                                                             <dt class="col-sm-4">Dosen Pembimbing</dt>
                                                             <dd class="col-sm-8">
-                                                                : {{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}
+                                                                :
+                                                                {{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}
                                                             </dd>
                                                         </dl>
                                                     </div>
@@ -225,7 +228,8 @@
             </div>
             <div class="tab-pane fade" id="dosen" role="tabpanel" aria-labelledby="dosen-tab">
                 <div class="d-flex justify-content-between align-items-center my-3">
-                    <a class="btn btn-primary me-2 text-white" data-bs-toggle="modal" data-bs-target="#createPembimbingModal">Tambah
+                    <a class="btn btn-primary me-2 text-white" data-bs-toggle="modal"
+                        data-bs-target="#createPembimbingModal">Tambah
                         Baru</a>
                     <div>
                         <span>Total Dosen: {{ $totalPembimbing }}</span>
@@ -249,7 +253,7 @@
                                         <tr>
                                             <td>{{ $pembimbing->nik }}</td>
                                             <td>{{ $pembimbing->nama }}</td>
-                                            <td>{{ $mahasiswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                            <td>{{ $pembimbing->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                             <td>{{ $pembimbing->telp }}</td>
                                             <td>
                                                 <div class="d-flex text-white">
@@ -282,7 +286,7 @@
                                                             <dd class="col-sm-8"> : {{ $pembimbing->nama }}</dd>
 
                                                             <dt class="col-sm-4">Jenis Kelamin</dt>
-                                                            <dd class="col-sm-8"> : 
+                                                            <dd class="col-sm-8"> :
                                                                 {{ $pembimbing->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
                                                             </dd>
 

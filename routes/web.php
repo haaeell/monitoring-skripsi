@@ -32,7 +32,17 @@ Auth::routes();
 Route::middleware('auth')->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::resource('bimbingan', BimbinganController::class);
-    Route::resource('profile', ProfileController::class);
+
+
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::get('/profile/mahasiswa/{id}', [ProfileController::class, 'showMahasiswaProfile'])->name('profile.mahasiswa');
+    Route::get('/profile/pembimbing/{id}', [ProfileController::class, 'showPembimbingProfile'])->name('profile.pembimbing');
+    Route::get('/profile/mahasiswa/{id}/edit', [ProfileController::class, 'editMahasiswaProfile'])->name('profile.mahasiswa.edit');
+    Route::put('/profile/mahasiswa/{id}', [ProfileController::class, 'updateMahasiswaProfile'])->name('profile.mahasiswa.update');
+
+    Route::get('/profile/pembimbing/{id}/edit', [ProfileController::class, 'editPembimbingProfile'])->name('profile.pembimbing.edit');
+    Route::put('/profile/pembimbing/{id}', [ProfileController::class, 'updatePembimbingProfile'])->name('profile.pembimbing.update');
+
     Route::resource('riwayat', RiwayatController::class);
     Route::resource('users', UserController::class);
     Route::resource('pesan', PesanController::class);

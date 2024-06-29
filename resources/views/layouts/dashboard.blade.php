@@ -53,7 +53,7 @@
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
                     <a href="index.html" class="app-brand-link">
-                       
+
                         <span class="app-brand-text demo menu-text fw-bold ms-2">Skripsi</span>
                     </a>
 
@@ -210,7 +210,7 @@
                     </div>
                 </nav>
 
-                <div class="container">
+                <div class="container py-4">
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
