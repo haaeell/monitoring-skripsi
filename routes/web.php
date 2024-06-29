@@ -29,14 +29,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource('bimbingan', BimbinganController::class);
-Route::resource('profile', ProfileController::class);
-Route::resource('riwayat', RiwayatController::class);
-Route::resource('users', UserController::class);
-Route::resource('pesan', PesanController::class);
-Route::resource('mahasiswa', MahasiswaController::class);
-Route::resource('pembimbing', PembimbingController::class);
-Route::resource('bimbingan-skripsi', BimbinganSkripsiController::class);
-Route::get('/cetak-pdf', [RiwayatController::class, 'cetakPdf'])->name('cetak-pdf');
+Route::middleware('auth')->group(function () {
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::resource('bimbingan', BimbinganController::class);
+    Route::resource('profile', ProfileController::class);
+    Route::resource('riwayat', RiwayatController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('pesan', PesanController::class);
+    Route::resource('mahasiswa', MahasiswaController::class);
+    Route::resource('pembimbing', PembimbingController::class);
+    Route::resource('bimbingan-skripsi', BimbinganSkripsiController::class);
+    Route::get('/cetak-pdf', [RiwayatController::class, 'cetakPdf'])->name('cetak-pdf');     
+
+});
 
