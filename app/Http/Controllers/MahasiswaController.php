@@ -15,11 +15,12 @@ class MahasiswaController extends Controller
      */
     public function index()
     {
-        $mahasiswas = Mahasiswa::with('pembimbing')->get();        
+        $mahasiswas = Mahasiswa::with('pembimbing')->get();
         $totalMahasiswa = $mahasiswas->count();
-
+    
         return view('lno.data.index', compact('mahasiswas', 'totalMahasiswa'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -51,6 +52,7 @@ class MahasiswaController extends Controller
             'name' => $request->input('nama'),
             'email' => $request->input('email'),
             'password' => bcrypt('password'), // Set a default password or use Hash facade
+            'role' => 'mhs',
         ]);
 
         $mahasiswa = Mahasiswa::create([

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pembimbing;
 use App\Models\User;
+use App\Models\Mahasiswa;
+use App\Models\Pembimbing;
 use Illuminate\Http\Request;
 
 class PembimbingController extends Controller
@@ -13,8 +14,11 @@ class PembimbingController extends Controller
      */
     public function index()
     {
+        $mahasiswas = Mahasiswa::with('pembimbing')->get();
+        $totalMahasiswa = $mahasiswas->count();
         $pembimbings = Pembimbing::all();
-        return view('lno.data.index', compact('pembimbings'));
+        $totalPembimbing = Pembimbing::count();
+        return view('lno.data.index', compact('pembimbings','mahasiswas','totalMahasiswa','totalPembimbing'));
     }
 
     /**
@@ -35,6 +39,7 @@ class PembimbingController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => bcrypt('password'), 
+            'role' => 'pembimbing',
         ]);
         $pembimbing = Pembimbing::create([
             'user_id' => $user->id,

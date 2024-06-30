@@ -47,9 +47,11 @@
                                             <td>{{ $mahasiswa->status }}</td>
                                             <td>
                                                 <div class="d-flex text-white">
-                                                    <a data-bs-toggle="modal" data-bs-target="#editMahasiswaModal"
-                                                        class="btn btn-sm btn-warning  me-2">Edit</a>
-                                                    <a data-bs-toggle="modal" data-bs-target="#readMahasiswaModal"
+                                                    <a href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#editMahasiswaModal{{ $mahasiswa->id }}"
+                                                        class="btn btn-sm btn-warning me-2">Edit</a>
+                                                    <a href="#" data-bs-toggle="modal"
+                                                        data-bs-target="#readMahasiswaModal{{ $mahasiswa->id }}"
                                                         class="btn btn-sm btn-secondary me-2">Detail</a>
                                                     <form action="{{ route('mahasiswa.destroy', $mahasiswa->id) }}"
                                                         method="POST" style="display:inline-block;">
@@ -60,13 +62,15 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                        <!-- Modal Read Mahasiswa -->
-                                        <div class="modal fade" id="readMahasiswaModal" tabindex="-1"
-                                            aria-labelledby="readMahasiswaModalLabel" aria-hidden="true">
+                                        <!-- Modal Detail Mahasiswa -->
+                                        <div class="modal fade" id="readMahasiswaModal{{ $mahasiswa->id }}" tabindex="-1"
+                                            aria-labelledby="readMahasiswaModalLabel{{ $mahasiswa->id }}"
+                                            aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-scrollable">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="readMahasiswaModalLabel">Detail
+                                                        <h5 class="modal-title"
+                                                            id="readMahasiswaModalLabel{{ $mahasiswa->id }}">Detail
                                                             Mahasiswa</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -74,43 +78,25 @@
                                                     <div class="modal-body">
                                                         <dl class="row">
                                                             <dt class="col-sm-4">NIM</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaNIM"> :
-                                                                {{ $mahasiswa->nim }}
-                                                            </dd>
-
+                                                            <dd class="col-sm-8">{{ $mahasiswa->nim }}</dd>
                                                             <dt class="col-sm-4">Nama</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaNama">
-                                                                : {{ $mahasiswa->nama }}</dd>
-
+                                                            <dd class="col-sm-8">{{ $mahasiswa->nama }}</dd>
                                                             <dt class="col-sm-4">Angkatan</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaAngkatan">
-                                                                : {{ $mahasiswa->angkatan }}</dd>
-
+                                                            <dd class="col-sm-8">{{ $mahasiswa->angkatan }}</dd>
                                                             <dt class="col-sm-4">Jenis Kelamin</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaJenisKelamin">
-                                                                :
+                                                            <dd class="col-sm-8">
                                                                 {{ $mahasiswa->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}
                                                             </dd>
-
                                                             <dt class="col-sm-4">Email</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaEmail">
-                                                                : {{ $mahasiswa->email }}</dd>
-
+                                                            <dd class="col-sm-8">{{ $mahasiswa->email }}</dd>
                                                             <dt class="col-sm-4">Telepon</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaTelp">
-                                                                : {{ $mahasiswa->telp }}</dd>
-
+                                                            <dd class="col-sm-8">{{ $mahasiswa->telp }}</dd>
                                                             <dt class="col-sm-4">Alamat</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaAlamat">
-                                                                : {{ $mahasiswa->alamat }}</dd>
-
+                                                            <dd class="col-sm-8">{{ $mahasiswa->alamat }}</dd>
                                                             <dt class="col-sm-4">Judul Tugas Akhir</dt>
-                                                            <dd class="col-sm-8" id="readMahasiswaJudulTA">
-                                                                : {{ $mahasiswa->judul_ta }}</dd>
-
+                                                            <dd class="col-sm-8">{{ $mahasiswa->judul_ta }}</dd>
                                                             <dt class="col-sm-4">Dosen Pembimbing</dt>
                                                             <dd class="col-sm-8">
-                                                                :
                                                                 {{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}
                                                             </dd>
                                                         </dl>
@@ -122,15 +108,15 @@
                                                 </div>
                                             </div>
                                         </div>
-
-
                                         <!-- Modal Edit Mahasiswa -->
-                                        <div class="modal fade" id="editMahasiswaModal" tabindex="-1"
-                                            aria-labelledby="editMahasiswaModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="editMahasiswaModal{{ $mahasiswa->id }}" tabindex="-1"
+                                            aria-labelledby="editMahasiswaModalLabel{{ $mahasiswa->id }}"
+                                            aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-scrollable">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editMahasiswaModalLabel">Edit
+                                                        <h5 class="modal-title"
+                                                            id="editMahasiswaModalLabel{{ $mahasiswa->id }}">Edit
                                                             Mahasiswa</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -197,7 +183,6 @@
                                                                     id="edit_judul_ta" name="judul_ta"
                                                                     value="{{ $mahasiswa->judul_ta }}">
                                                             </div>
-
                                                             <div class="mb-3">
                                                                 <label for="pembimbing_id" class="form-label">Dosen
                                                                     Pembimbing</label>
@@ -225,6 +210,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
             <div class="tab-pane fade" id="dosen" role="tabpanel" aria-labelledby="dosen-tab">
                 <div class="d-flex justify-content-between align-items-center my-3">
@@ -257,22 +243,26 @@
                                             <td>{{ $pembimbing->telp }}</td>
                                             <td>
                                                 <div class="d-flex text-white">
-                                                    <a data-bs-toggle="modal" data-bs-target="#editPembimbingModal"
+                                                    <a data-bs-toggle="modal"
+                                                        data-bs-target="#editPembimbingModal{{ $pembimbing->id }}"
                                                         class="btn btn-sm btn-warning me-2">Edit</a>
-                                                    <a data-bs-toggle="modal" data-bs-target="#readPembimbingModal"
+                                                    <a data-bs-toggle="modal"
+                                                        data-bs-target="#readPembimbingModal{{ $pembimbing->id }}"
                                                         class="btn btn-sm btn-secondary me-2">Detail</a>
                                                     <a data-bs-toggle="modal" data-bs-target="#deletePembimbingModal"
                                                         class="btn btn-sm btn-danger me-2">Delete</a>
                                                 </div>
                                             </td>
                                         </tr>
-
-                                        <div class="modal fade" id="readPembimbingModal" tabindex="-1"
-                                            aria-labelledby="readPembimbingModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="readPembimbingModal{{ $pembimbing->id }}"
+                                            tabindex="-1"
+                                            aria-labelledby="readPembimbingModalLabel{{ $pembimbing->id }}"
+                                            aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-scrollable">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="readPembimbingModalLabel">Detail
+                                                        <h5 class="modal-title"
+                                                            id="readPembimbingModalLabel{{ $pembimbing->id }}">Detail
                                                             Pembimbing</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -303,12 +293,15 @@
                                         </div>
 
                                         <!-- Modal Edit Pembimbing -->
-                                        <div class="modal fade" id="editPembimbingModal" tabindex="-1"
-                                            aria-labelledby="editPembimbingModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="editPembimbingModal{{ $pembimbing->id }}"
+                                            tabindex="-1"
+                                            aria-labelledby="editPembimbingModalLabel{{ $pembimbing->id }}"
+                                            aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-scrollable">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="editPembimbingModalLabel">Edit
+                                                        <h5 class="modal-title"
+                                                            id="editPembimbingModalLabel{{ $pembimbing->id }}">Edit
                                                             Pembimbing</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -361,12 +354,16 @@
 
 
                                         <!-- Modal Delete Pembimbing -->
-                                        <div class="modal fade" id="deletePembimbingModal" tabindex="-1"
-                                            aria-labelledby="deletePembimbingModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="deletePembimbingModal{{ $pembimbing->id }}"
+                                            tabindex="-1"
+                                            aria-labelledby="deletePembimbingModalLabel{{ $pembimbing->id }}"
+                                            aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="deletePembimbingModalLabel">Konfirmasi
+                                                        <h5 class="modal-title"
+                                                            id="deletePembimbingModalLabel{{ $pembimbing->id }}">
+                                                            Konfirmasi
                                                             Hapus Pembimbing</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -375,7 +372,8 @@
                                                         <p>Anda yakin ingin menghapus data pembimbing ini?</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <form action="#" method="POST" id="deletePembimbingForm">
+                                                        <form action="{{ route('pembimbing.destroy', $pembimbing->id) }}"
+                                                            method="POST" id="deletePembimbingForm">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="btn btn-danger">Hapus</button>
@@ -395,6 +393,10 @@
             </div>
         </div>
     </div>
+
+
+
+
     <!-- Modal -->
     <div class="modal fade" id="createMahasiswaModal" tabindex="-1" aria-labelledby="createMahasiswaModalLabel"
         aria-hidden="true">
@@ -505,4 +507,114 @@
     </div>
 
     <!-- Modal Read Pembimbing -->
+
+    <div class="modal fade" id="readPembimbingModal" tabindex="-1" aria-labelledby="readPembimbingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="readPembimbingModalLabel">Detail
+                        Pembimbing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">NIK</dt>
+                        <dd class="col-sm-8"> : {{ $pembimbing->nik }}</dd>
+
+                        <dt class="col-sm-4">Nama</dt>
+                        <dd class="col-sm-8"> : {{ $pembimbing->nama }}</dd>
+
+                        <dt class="col-sm-4">Jenis Kelamin</dt>
+                        <dd class="col-sm-8"> :
+                            {{ $pembimbing->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                        </dd>
+
+                        <dt class="col-sm-4">Telepon</dt>
+                        <dd class="col-sm-8"> : {{ $pembimbing->telp }}</dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Pembimbing -->
+    <div class="modal fade" id="editPembimbingModal" tabindex="-1" aria-labelledby="editPembimbingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPembimbingModalLabel">Edit
+                        Pembimbing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('pembimbing.update', $pembimbing->id) }}" method="POST"
+                        id="editPembimbingForm">
+                        @csrf
+                        @method('PUT')
+                        <div class="mb-3">
+                            <label for="edit_nik" class="form-label">NIK</label>
+                            <input type="text" class="form-control" id="edit_nik" name="nik"
+                                value="{{ $pembimbing->nik }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_nama" class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="edit_nama" name="nama"
+                                value="{{ $pembimbing->nama }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_jenis_kelamin" class="form-label">Jenis
+                                Kelamin</label>
+                            <select class="form-control" id="edit_jenis_kelamin" name="jenis_kelamin" required>
+                                <option value="L" {{ $pembimbing->jenis_kelamin == 'L' ? 'selected' : '' }}>
+                                    Laki-laki
+                                </option>
+                                <option value="P" {{ $pembimbing->jenis_kelamin == 'P' ? 'selected' : '' }}>
+                                    Perempuan
+                                </option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_telp" class="form-label">Telepon</label>
+                            <input type="text" class="form-control" id="edit_telp" name="telp"
+                                value="{{ $pembimbing->telp }}" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Simpan
+                            Perubahan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Delete Pembimbing -->
+    <div class="modal fade" id="deletePembimbingModal" tabindex="-1" aria-labelledby="deletePembimbingModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deletePembimbingModalLabel">Konfirmasi
+                        Hapus Pembimbing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Anda yakin ingin menghapus data pembimbing ini?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="{{ route('pembimbing.destroy', $pembimbing->id) }}" method="POST"
+                        id="deletePembimbingForm">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
