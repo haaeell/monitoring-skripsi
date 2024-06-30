@@ -4,9 +4,9 @@
     <div class="card mb-4">
         <h5 class="card-header text-center">Profil Mahasiswa</h5>
         <div class="card-body">
-            <div class="d-flex align-items-center justify-content-center mb-3" style="height: 200px;">
-                <img src="{{ $mahasiswa->photo ? asset($mahasiswa->photo) : asset('default-avatar.png') }}" alt="Photo"
-                    class="img-thumbnail" style="width: 150px;">
+            <div class="d-flex align-items-center justify-content-center mb-4" style="height: 200px;">
+                <img src="{{ $mahasiswa->user->photo ? asset($mahasiswa->user->photo) : asset('default-avatar.png') }}"
+                    alt="Photo" class="img-thumbnail" style="width: 150px;">
             </div>
 
             <div class="mb-3 row">

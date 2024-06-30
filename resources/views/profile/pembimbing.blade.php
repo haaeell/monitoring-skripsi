@@ -5,8 +5,8 @@
         <h5 class="card-header">Profil Pembimbing</h5>
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-center mb-3" style="height: 200px;">
-                <img src="{{ $pembimbing->photo ? asset($pembimbing->photo) : asset('default-avatar.png') }}" alt="Photo"
-                    class="img-thumbnail" style="width: 150px;">
+                <img src="{{ $pembimbing->user->photo ? asset($pembimbing->user->photo) : asset('default-avatar.png') }}"
+                    alt="Photo" class="img-thumbnail" style="width: 150px;">
             </div>
 
             <div class="mb-3 row">
