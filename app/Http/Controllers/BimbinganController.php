@@ -56,7 +56,25 @@ class BimbinganController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'keterangan' => 'required|string', // Atur sesuai kebutuhan validasi
+        ]);
+
+        try {
+            // Cari mahasiswa berdasarkan ID
+            $mahasiswa = Mahasiswa::findOrFail($id);
+
+            // Update keterangan
+            $mahasiswa->keterangan = $validatedData['keterangan'];
+            $mahasiswa->save();
+
+            // Response jika berhasil
+            return response()->json(['message' => 'Keterangan mahasiswa berhasil diperbarui.']);
+
+        } catch (\Exception $e) {
+            // Response jika terjadi error
+            return response()->json(['error' => 'Gagal memperbarui keterangan mahasiswa: ' . $e->getMessage()], 500);
+        }
     }
 
     /**

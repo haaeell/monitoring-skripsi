@@ -141,11 +141,11 @@
                                     </svg>
 
                                 </span>
-                                <span class="app-brand-text demo text-body fw-bold">Sneat</span>
+                                <span class="app-brand-text demo text-body fw-bold">Monitoring Skripsi</span>
                             </a>
                         </div>
                         <!-- /Logo -->
-                        <h4 class="mb-2">Welcome to Sneat! 👋</h4>
+                        <h4 class="mb-2">Welcome 👋</h4>
                         <p class="mb-4">Please sign-in to your account and start the adventure</p>
 
                         <form id="formAuthentication" class="mb-3" method="POST" action="{{ route('login') }}">
@@ -196,32 +196,6 @@
         <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
     </div>
     </form>
-
-    <p class="text-center">
-        <span>New on our platform?</span>
-        <a href="{{ route('register') }}">
-            <span>Create an account</span>
-        </a>
-    </p>
-
-    <div class="divider my-4">
-        <div class="divider-text">or</div>
-    </div>
-
-    <div class="d-flex justify-content-center">
-        <a href="javascript:;" class="btn btn-icon btn-label-facebook me-3">
-            <i class="tf-icons bx bxl-facebook"></i>
-        </a>
-        <a href="javascript:;" class="btn btn-icon btn-label-google-plus me-3">
-            <i class="tf-icons bx bxl-google-plus"></i>
-        </a>
-        <a href="javascript:;" class="btn btn-icon btn-label-twitter">
-            <i class="tf-icons bx bxl-twitter"></i>
-        </a>
-    </div>
-    </div>
-    </div>
-    <!-- /Register -->
     </div>
     </div>
     </div>

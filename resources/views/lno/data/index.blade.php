@@ -291,6 +291,41 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        
+    <!-- Modal Read Pembimbing -->
+
+    <div class="modal fade" id="readPembimbingModal" tabindex="-1" aria-labelledby="readPembimbingModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="readPembimbingModalLabel">Detail
+                    Pembimbing</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <dl class="row">
+                    <dt class="col-sm-4">NIK</dt>
+                    <dd class="col-sm-8"> : {{ $pembimbing->nik }}</dd>
+
+                    <dt class="col-sm-4">Nama</dt>
+                    <dd class="col-sm-8"> : {{ $pembimbing->nama }}</dd>
+
+                    <dt class="col-sm-4">Jenis Kelamin</dt>
+                    <dd class="col-sm-8"> :
+                        {{ $pembimbing->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                    </dd>
+
+                    <dt class="col-sm-4">Telepon</dt>
+                    <dd class="col-sm-8"> : {{ $pembimbing->telp }}</dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
                                         <!-- Modal Edit Pembimbing -->
                                         <div class="modal fade" id="editPembimbingModal{{ $pembimbing->id }}"
@@ -506,115 +541,8 @@
         </div>
     </div>
 
-    <!-- Modal Read Pembimbing -->
 
-    <div class="modal fade" id="readPembimbingModal" tabindex="-1" aria-labelledby="readPembimbingModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="readPembimbingModalLabel">Detail
-                        Pembimbing</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <dl class="row">
-                        <dt class="col-sm-4">NIK</dt>
-                        <dd class="col-sm-8"> : {{ $pembimbing->nik }}</dd>
-
-                        <dt class="col-sm-4">Nama</dt>
-                        <dd class="col-sm-8"> : {{ $pembimbing->nama }}</dd>
-
-                        <dt class="col-sm-4">Jenis Kelamin</dt>
-                        <dd class="col-sm-8"> :
-                            {{ $pembimbing->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
-                        </dd>
-
-                        <dt class="col-sm-4">Telepon</dt>
-                        <dd class="col-sm-8"> : {{ $pembimbing->telp }}</dd>
-                    </dl>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Edit Pembimbing -->
-    <div class="modal fade" id="editPembimbingModal" tabindex="-1" aria-labelledby="editPembimbingModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editPembimbingModalLabel">Edit
-                        Pembimbing</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('pembimbing.update', $pembimbing->id) }}" method="POST"
-                        id="editPembimbingForm">
-                        @csrf
-                        @method('PUT')
-                        <div class="mb-3">
-                            <label for="edit_nik" class="form-label">NIK</label>
-                            <input type="text" class="form-control" id="edit_nik" name="nik"
-                                value="{{ $pembimbing->nik }}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_nama" class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="edit_nama" name="nama"
-                                value="{{ $pembimbing->nama }}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_jenis_kelamin" class="form-label">Jenis
-                                Kelamin</label>
-                            <select class="form-control" id="edit_jenis_kelamin" name="jenis_kelamin" required>
-                                <option value="L" {{ $pembimbing->jenis_kelamin == 'L' ? 'selected' : '' }}>
-                                    Laki-laki
-                                </option>
-                                <option value="P" {{ $pembimbing->jenis_kelamin == 'P' ? 'selected' : '' }}>
-                                    Perempuan
-                                </option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_telp" class="form-label">Telepon</label>
-                            <input type="text" class="form-control" id="edit_telp" name="telp"
-                                value="{{ $pembimbing->telp }}" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Simpan
-                            Perubahan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+  
 
 
-    <!-- Modal Delete Pembimbing -->
-    <div class="modal fade" id="deletePembimbingModal" tabindex="-1" aria-labelledby="deletePembimbingModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deletePembimbingModalLabel">Konfirmasi
-                        Hapus Pembimbing</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Anda yakin ingin menghapus data pembimbing ini?</p>
-                </div>
-                <div class="modal-footer">
-                    <form action="{{ route('pembimbing.destroy', $pembimbing->id) }}" method="POST"
-                        id="deletePembimbingForm">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Hapus</button>
-                    </form>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
