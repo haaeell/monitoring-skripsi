@@ -35,6 +35,14 @@ class BimbinganController extends Controller
         //
     }
 
+    public function showBimbingan($id)
+    {
+        $mahasiswa = Mahasiswa::find($id);
+        $bimbinganSkripsi = $mahasiswa->bimbinganSkripsi;
+
+        return view('bimbingan_skripsi.index', compact('mahasiswa', 'bimbinganSkripsi'));
+    }
+
     /**
      * Display the specified resource.
      */

@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BimbinganController;
 use App\Http\Controllers\BimbinganSkripsiController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PembimbingController;
 use App\Http\Controllers\PesanController;
 use App\Http\Controllers\RiwayatController;
@@ -49,7 +50,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('mahasiswa', MahasiswaController::class);
     Route::resource('pembimbing', PembimbingController::class);
     Route::resource('bimbingan-skripsi', BimbinganSkripsiController::class);
-    Route::get('/cetak-pdf', [RiwayatController::class, 'cetakPdf'])->name('cetak-pdf');     
+    Route::get('/cetak-pdf', [RiwayatController::class, 'cetakPdf'])->name('cetak-pdf');   
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');  
+    Route::get('/mark-as-read/{notification_id}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
+    
 
 });
 
