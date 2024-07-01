@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BimbinganSkripsi;
+use App\Models\Mahasiswa;
+use App\Notifications\BimbinganBaruNotification;
+use App\Notifications\BalasanBimbinganNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +22,6 @@ class BimbinganSkripsiController extends Controller
 
             $bimbinganSkripsi = BimbinganSkripsi::with('mahasiswa')->get();
             return view('bimbingan_skripsi.index', compact('bimbinganSkripsi'));
-
         } else {
 
             $pembimbing = $user->pembimbing;
@@ -61,8 +63,13 @@ class BimbinganSkripsiController extends Controller
             $validatedData['file'] = 'bimbingan_skripsi_files/' . $fileName;
         }
 
-        BimbinganSkripsi::create($validatedData);
+        $bimbingan = BimbinganSkripsi::create($validatedData);
 
+        $mahasiswa = Mahasiswa::find($request->mahasiswa_id);
+        $pembimbing = $mahasiswa->pembimbing;
+        if ($pembimbing && $pembimbing->user) {
+            $pembimbing->user->notify(new BimbinganBaruNotification($bimbingan));
+        }
         return redirect()->route('bimbingan-skripsi.index')->with('success', 'Bimbingan skripsi berhasil ditambahkan.');
     }
 
@@ -97,6 +104,15 @@ class BimbinganSkripsiController extends Controller
         $bimbinganSkripsi->pembahasan_dosen = $validatedData['pembahasan_dosen'];
         $bimbinganSkripsi->status = 'sudah dibaca';
         $bimbinganSkripsi->save();
+
+        $user = auth()->user();
+        $notification = $user->unreadNotifications->firstWhere('data.bimbingan_id', $bimbinganSkripsi->id);
+        if ($notification) {
+            $notification->markAsRead();
+        }
+
+        $mahasiswa = $bimbinganSkripsi->mahasiswa;
+        $mahasiswa->user->notify(new BalasanBimbinganNotification($bimbinganSkripsi));
 
         return redirect()->route('bimbingan-skripsi.index')->with('success', 'Pembahasan dan status bimbingan skripsi berhasil diperbarui.');
     }

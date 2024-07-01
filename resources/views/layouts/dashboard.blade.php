@@ -154,6 +154,91 @@
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
                             <!-- User -->
+                            <!-- Notification -->
+                            @php
+                                $notifications = Auth::user()->unreadNotifications;
+                            @endphp
+
+                            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                                    data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    <i class="bx bx-bell bx-sm"></i>
+                                    <span
+                                        class="badge bg-danger rounded-pill badge-notifications">{{ $notifications->count() }}</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end py-0">
+                                    <li class="dropdown-menu-header border-bottom">
+                                        <div class="dropdown-header d-flex align-items-center py-3">
+                                            <h5 class="text-body mb-0 me-auto">Notifikasi</h5>
+                                            <form action="{{ route('notifications.readAll') }}" method="POST">
+                                                @csrf
+                                                @method('POST')
+                                                <button type="submit" class="dropdown-notifications-all text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Tandai semua sebagai sudah dibaca">
+                                                    <i class="bx fs-4 bx-envelope-open"></i>
+                                                </button>
+                                            </form>
+                                            
+                                        </div>
+                                    </li>
+                                    <li class="dropdown-notifications-list scrollable-container">
+                                        <ul class="list-group list-group-flush">
+
+
+                                            {{-- MAHASISWA --}}
+                                            @if (Auth::user()->role == 'mhs')
+                                                @foreach ($notifications as $notification)
+                                                    <div>
+                                                        <a
+                                                        href="{{ route('pesan.index') }}">
+                                                        <li
+                                                            class="list-group-item list-group-item-action dropdown-notifications-item">
+                                                            <div class="d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <p class="mb-0">
+                                                                        {{ $notification->data['message'] }}
+                                                                    </p>
+                                                                    <small
+                                                                        class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                                </div>
+                                    
+                                                            </div>
+                                                        </li>
+                                                    </a>
+                                                    </div>
+                                                @endforeach
+                                            @else
+                                                @foreach ($notifications as $notification)
+                                                    <a
+                                                        href="{{ url('/bimbingan-skripsi?mahasiswa_id=' . $notification->data['mahasiswa_id']) }}">
+                                                        <li
+                                                            class="list-group-item list-group-item-action dropdown-notifications-item">
+                                                            <div class="d-flex">
+                                                                <div class="flex-grow-1">
+                                                                    <p class="mb-0">
+                                                                        {{ $notification->data['message'] }}
+                                                                    </p>
+                                                                    <small
+                                                                        class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                                </div>
+                                                                <div
+                                                                    class="flex-shrink-0 dropdown-notifications-actions">
+                                                                    <a href="{{ url('/bimbingan-skripsi?mahasiswa_id=' . $notification->data['mahasiswa_id']) }}"
+                                                                        class="dropdown-notifications-read">
+                                                                        <span class="badge badge-dot"></span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </a>
+                                                @endforeach
+                                            @endif
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </li>
+
+                            <!--/ Notification -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
@@ -259,6 +344,7 @@
             $('.datatable').DataTable();
         });
     </script>
+    @yield('scripts')
     <script src="{{ asset('assets') }}/vendor/libs/popper/popper.js"></script>
     <script src="{{ asset('assets') }}/vendor/js/bootstrap.js"></script>
     <script src="{{ asset('assets') }}/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
