@@ -29,9 +29,8 @@
                                     $notification = Auth::user()->unreadNotifications->firstWhere('data.bimbingan_id', $item->id);
                                     $isNew = $notification ? true : false;
                                 @endphp
-                                <label class="col-sm-2 col-form-label fw-bold">Bimbingan ke- </label>
-                                <div class="col-sm-10">
-                                    <p class="form-control-plaintext">: {{ $loop->iteration }} <span class="badge bg-danger">{{ $isNew ? 'Baru' : '' }}</span></p>
+                               
+                                <div class="col-sm-10"> <span class="badge bg-danger">{{ $isNew ? 'Baru' : '' }}</span>
                                 </div>
                             </div>
                             <div class="mb-1 row">

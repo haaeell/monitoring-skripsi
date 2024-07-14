@@ -16,9 +16,11 @@ class PesanController extends Controller
     {
         $mahasiswaId = Auth::user()->mahasiswa->id;
         $bimbingan = BimbinganSkripsi::where('mahasiswa_id', $mahasiswaId)
-                    ->with('mahasiswa.user')
-                    ->orderBy('created_at', 'desc') 
-                    ->get();
+        ->with('mahasiswa.user')
+        ->whereNotNull('pembahasan_dosen') // Memeriksa apakah pembahasan_dosen tidak null
+        ->orderBy('updated_at', 'desc')
+        ->get();
+    
     
         return view('mahasiswa.pesan.index', compact('bimbingan'));
     }

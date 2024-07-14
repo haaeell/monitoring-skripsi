@@ -201,88 +201,97 @@
                             <!-- User -->
                             <!-- Notification -->
                             @php
-                                $notifications = Auth::user()->unreadNotifications;
-                            @endphp
-
-                            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
-                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
-                                    data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                    <i class="bx bx-bell bx-sm"></i>
-                                    <span
-                                        class="badge bg-danger rounded-pill badge-notifications">{{ $notifications->count() }}</span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end py-0">
-                                    <li class="dropdown-menu-header border-bottom">
-                                        <div class="dropdown-header d-flex align-items-center py-3">
-                                            <h5 class="text-body mb-0 me-auto">Notifikasi</h5>
-                                            <form action="{{ route('notifications.readAll') }}" method="POST">
-                                                @csrf
-                                                @method('POST')
-                                                <button type="submit" class="dropdown-notifications-all text-body"
+                            $notifications = Auth::user()->unreadNotifications;
+                        @endphp
+                        
+                        <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+                            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                               data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                <i class="bx bx-bell bx-sm"></i>
+                                <span class="badge bg-danger rounded-pill badge-notifications">{{ $notifications->count() }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end py-0">
+                                <li class="dropdown-menu-header border-bottom">
+                                    <div class="dropdown-header d-flex align-items-center py-3">
+                                        <h5 class="text-body mb-0 me-auto">Notifikasi</h5>
+                                        <form action="{{ route('notifications.markAllAsRead') }}" method="POST">
+                                            @csrf
+                                            @method('POST')
+                                            <button type="submit" class="dropdown-notifications-all text-body"
                                                     data-bs-toggle="tooltip" data-bs-placement="top"
                                                     title="Tandai semua sebagai sudah dibaca">
-                                                    <i class="bx fs-4 bx-envelope-open"></i>
-                                                </button>
-                                            </form>
-
-                                        </div>
-                                    </li>
-                                    <li class="dropdown-notifications-list scrollable-container">
-                                        <ul class="list-group list-group-flush">
-
-
-                                            {{-- MAHASISWA --}}
-                                            @if (Auth::user()->role == 'mahasiswa')
-                                                @foreach ($notifications as $notification)
-                                                    <div>
-                                                        <a href="{{ route('pesan.index') }}">
-                                                            <li
-                                                                class="list-group-item list-group-item-action dropdown-notifications-item">
-                                                                <div class="d-flex">
-                                                                    <div class="flex-grow-1">
-                                                                        <p class="mb-0">
-                                                                            {{ $notification->data['message'] }}
-                                                                        </p>
-                                                                        <small
-                                                                            class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
-                                                                    </div>
-
-                                                                </div>
-                                                            </li>
-                                                        </a>
-                                                    </div>
-                                                @endforeach
-                                            @else
-                                                @foreach ($notifications as $notification)
-                                                    <a
-                                                        href="{{ url('/bimbingan-skripsi?mahasiswa_id=' . $notification->data['mahasiswa_id']) }}">
-                                                        <li
-                                                            class="list-group-item list-group-item-action dropdown-notifications-item">
+                                                <i class="bx fs-4 bx-envelope-open"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </li>
+                                <li class="dropdown-notifications-list scrollable-container">
+                                    <ul class="list-group list-group-flush">
+                                        @if (Auth::user()->role == 'mahasiswa')
+                                            @foreach ($notifications as $notification)
+                                                <div>
+                                                    <a href="{{ route('pesan.index') }}" class="notification-link" data-id="{{ $notification->id }}">
+                                                        <li class="list-group-item list-group-item-action dropdown-notifications-item">
                                                             <div class="d-flex">
                                                                 <div class="flex-grow-1">
-                                                                    <p class="mb-0">
-                                                                        {{ $notification->data['message'] }}
-                                                                    </p>
-                                                                    <small
-                                                                        class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
-                                                                </div>
-                                                                <div
-                                                                    class="flex-shrink-0 dropdown-notifications-actions">
-                                                                    <a href="{{ url('/bimbingan-skripsi?mahasiswa_id=' . $notification->data['mahasiswa_id']) }}"
-                                                                        class="dropdown-notifications-read">
-                                                                        <span class="badge badge-dot"></span>
-                                                                    </a>
+                                                                    <p class="mb-0">{{ $notification->data['message'] }}</p>
+                                                                    <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                                                 </div>
                                                             </div>
                                                         </li>
                                                     </a>
-                                                @endforeach
-                                            @endif
-                                        </ul>
-                                    </li>
-
-                                </ul>
-                            </li>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            @foreach ($notifications as $notification)
+                                                <a href="{{ url('/bimbingan-skripsi?mahasiswa_id=' . $notification->data['mahasiswa_id']) }}" class="notification-link" data-id="{{ $notification->id }}">
+                                                    <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                                        <div class="d-flex">
+                                                            <div class="flex-grow-1">
+                                                                <p class="mb-0">{{ $notification->data['message'] }}</p>
+                                                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                            </div>
+                                                            <div class="flex-shrink-0 dropdown-notifications-actions">
+                                                                <a href="{{ url('/bimbingan-skripsi?mahasiswa_id=' . $notification->data['mahasiswa_id']) }}" class="dropdown-notifications-read">
+                                                                    <span class="badge badge-dot"></span>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </a>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                document.querySelector('.nav-link.dropdown-toggle').addEventListener('click', function () {
+                                    fetch('{{ route('notifications.markAllAsRead') }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        },
+                                        body: JSON.stringify({})
+                                    }).then(response => {
+                                        if (!response.ok) {
+                                            throw new Error('Network response was not ok ' + response.statusText);
+                                        }
+                                        return response.json();
+                                    }).then(data => {
+                                        if (data.status === 'success') {
+                                            document.querySelector('.badge-notifications').textContent = '0';
+                                        } else {
+                                            console.error('Error:', data);
+                                        }
+                                    }).catch(error => console.error('Fetch error:', error));
+                                });
+                            });
+                        </script>
+                        
 
                             <!--/ Notification -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">

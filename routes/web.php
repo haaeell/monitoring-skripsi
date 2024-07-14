@@ -68,7 +68,8 @@ Route::post('/jadwal-ujian/{id}/tolak', [JadwalUjianController::class, 'tolak'])
     Route::resource('pembimbing', PembimbingController::class);
     Route::resource('bimbingan-skripsi', BimbinganSkripsiController::class);
     Route::get('/cetak-pdf', [RiwayatController::class, 'cetakPdf'])->name('cetak-pdf');   
-    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');  
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAllAsRead');  
+
     Route::get('/mark-as-read/{notification_id}', [NotificationController::class, 'markAsRead'])->name('markAsRead');
     
 

@@ -49,6 +49,7 @@ class HomeController extends Controller
                 $query->where('penguji1_id', $pembimbingId)
                     ->orWhere('penguji2_id', $pembimbingId);
             })->where('tanggal', '>', Carbon::today())
+                ->where('status', 'diterima')
                 ->get();
             $jumlahMahasiswaBimbingan = Mahasiswa::where('pembimbing_id', $pembimbingId)->count();
             $jumlahSidangProposal = JadwalUjian::where('kategori', 'Proposal')

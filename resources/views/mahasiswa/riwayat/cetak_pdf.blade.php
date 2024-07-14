@@ -75,7 +75,7 @@
         </tr>
         <tr>
             <td>Judul</td>
-            <td colspan="3">: {{ $bimbingan->first()->mahasiswa->judul_ta }}</td>
+            <td colspan="3">: {{ $bimbingan->first()->mahasiswa->judulSkripsi->judul_skripsi }}</td>
         </tr>
     </table>
     <table>

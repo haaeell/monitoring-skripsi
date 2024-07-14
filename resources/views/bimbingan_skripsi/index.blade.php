@@ -86,7 +86,7 @@
                                                             <label for="judulSkripsi" class="form-label">Judul
                                                                 Skripsi</label>
                                                             <input type="text" class="form-control" id="judulSkripsi"
-                                                                value="{{ $item->mahasiswa->judul_ta }}" required readonly>
+                                                                value="{{ $item->mahasiswa->judulSkripsi->judul_skripsi }}" required readonly>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="pembahasan_mahasiswa" class="form-label">Pembahasan

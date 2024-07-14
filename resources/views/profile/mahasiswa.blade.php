@@ -53,12 +53,6 @@
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="judul_ta" class="col-md-2 col-form-label">Judul TA</label>
-                <div class="col-md-10">
-                    <input class="form-control" type="text" value="{{ $mahasiswa->judul_ta }}" id="judul_ta" readonly />
-                </div>
-            </div>
-            <div class="mb-3 row">
                 <label for="pembimbing" class="col-md-2 col-form-label">Pembimbing</label>
                 <div class="col-md-10">
                     <input class="form-control" type="text"
@@ -130,11 +124,6 @@
                             <label for="alamat" class="form-label">Alamat</label>
                             <input type="text" class="form-control" id="alamat" name="alamat"
                                 value="{{ $mahasiswa->alamat }}" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="judul_ta" class="form-label">Judul TA</label>
-                            <input type="text" class="form-control" id="judul_ta" name="judul_ta"
-                                value="{{ $mahasiswa->judul_ta }}">
                         </div>
                         <div class="mb-3">
                             <label for="pembimbing_id" class="form-label">Dosen Pembimbing</label>
