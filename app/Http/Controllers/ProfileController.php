@@ -25,7 +25,7 @@ class ProfileController extends Controller
             return redirect()->route('profile.pembimbing', ['id' => $user->pembimbing->id]);
         }
 
-        return redirect()->route('dashboard')->with('error', 'Role tidak dikenali.');
+        return redirect()->route('profile.admin', ['id' => $user->id]);
     }
 
     public function showMahasiswaProfile($id)
@@ -39,6 +39,11 @@ class ProfileController extends Controller
     {
         $pembimbing = Pembimbing::findOrFail($id);
         return view('profile.pembimbing', compact('pembimbing'));
+    }
+    public function showAdminProfile($id)
+    {
+        $user = User::findOrFail($id);
+        return view('profile.admin', compact('user'));
     }
 
     public function updateMahasiswaProfile(Request $request, $id)
@@ -148,5 +153,35 @@ class ProfileController extends Controller
 
             return redirect()->route('profile.pembimbing', ['id' => $pembimbing->id])->with('error', 'Terjadi kesalahan saat memperbarui profil: ' . $e->getMessage());
         }
+    }
+
+    public function updateAdminProfile(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required',
+            'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+            'password' => 'nullable|min:8|confirmed',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => $request->filled('password') ? Hash::make($request->input('password')) : $user->password,
+        ]);
+
+        if ($request->hasFile('photo')) {
+            if ($user->photo) {
+                Storage::delete(str_replace('/storage/', 'public/', $user->photo));
+            }
+
+            $photoPath = $request->file('photo')->store('public/photos');
+            $user->update(['photo' => Storage::url($photoPath)]);
+        }
+
+        return redirect()->back()->with('success', 'Profil Pembimbing berhasil diperbarui.');
+      
     }
 }

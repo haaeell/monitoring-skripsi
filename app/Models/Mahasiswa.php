@@ -25,7 +25,6 @@ class Mahasiswa extends Model
         'email',
         'telp',
         'alamat',
-        'judul_ta',
         'pembimbing_id',
     ];
 
@@ -35,6 +34,11 @@ class Mahasiswa extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function judulSkripsi(){
+        return $this->hasOne(PengajuanSkripsi::class)
+            ->where('status', 'diterima');
     }
 
 

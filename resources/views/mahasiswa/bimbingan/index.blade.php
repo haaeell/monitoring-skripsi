@@ -23,8 +23,8 @@
                     <tr>
                         <td>{{ $item->nim }}</td>
                         <td>{{ $item->nama }}</td>
-                        <td>{{ $item->judul_ta }}</td>
-                        <td>{{ $item->keterangan }}</td>
+                        <td>{{ $item->judulSkripsi->judul_skripsi ?? '-'  }}</td>
+                        <td>{{ $item->keterangan ?? '-'}}</td>
                         <td>{{ $item->bimbinganSkripsi->count() }}</td>
                         <td>
                             <button class="btn btn-primary edit-keterangan" data-id="{{ $item->id }}" data-keterangan="{{ $item->keterangan }}">Edit Keterangan</button>

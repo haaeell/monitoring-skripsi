@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BimbinganSkripsi;
-use App\Models\Mahasiswa;
+use App\Models\PengajuanSkripsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PesanController extends Controller
+class JudulSkripsiController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $mahasiswaId = Auth::user()->mahasiswa->id;
-        $bimbingan = BimbinganSkripsi::where('mahasiswa_id', $mahasiswaId)
-                    ->with('mahasiswa.user')
-                    ->orderBy('created_at', 'desc') 
-                    ->get();
-    
-        return view('mahasiswa.pesan.index', compact('bimbingan'));
+        if(Auth::user()->role == 'mahasiswa') {
+            $riwayatPengajuanSkripsi = PengajuanSkripsi::where('mahasiswa_id', Auth::user()->mahasiswa->id)->get();
+        } else {
+            $riwayatPengajuanSkripsi = PengajuanSkripsi::all();
+        }
+        return view('judul_skripsi.index', compact('riwayatPengajuanSkripsi'));
     }
-    
 
     /**
      * Show the form for creating a new resource.

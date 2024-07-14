@@ -123,15 +123,22 @@
 
 
     {{-- MAHASISWA --}}
-    @if (Auth::user()->role == 'mhs')
+    @if (Auth::user()->role == 'mahasiswa')
         <div class="card mt-4">
             <div class="card-header">
                 <h4 class="fw-semibold  m-0">Bimbingan</h4>
                 <p>Nama Pembimbing : <span class="fw-bold">{{ Auth::user()->mahasiswa->pembimbing->nama }}</span> </p>
 
                 <h4 class="fw-semibold m-0">Judul Skripsi:</h4>
-                <p class="m-0">{{ Auth::user()->mahasiswa->judul_ta }}</p>
+                <p class="m-0">{{ $judulSkripsi->judul_skripsi ?? '' }} </p>
+                @if ($judulSkripsi == null)
+                <span class="text-danger">*Belum ada judul skripsi yang diterima silakan ajukan judul terlebih dahulu!</span>
+               <div class="col-md-3">
+                <a href="/judul-skripsi" class="btn btn-outline-primary d-block mt-4">Ajukan Judul Skripsi</a>
+               </div>
+                @endif
             </div>
+            @if ($judulSkripsi != null)
             <div class="card-body">
                 <form action="{{ route('bimbingan-skripsi.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -149,7 +156,8 @@
                     <button class="btn btn-danger mt-3">Batal</button>
                 </form>
 
-            </div>
+            </div> 
+            @endif
         </div>
     @endif
 @endsection

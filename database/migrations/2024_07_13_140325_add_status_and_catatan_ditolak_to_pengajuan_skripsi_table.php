@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('mahasiswa', function (Blueprint $table) {
-            $table->text('keterangan')->nullable();
+        Schema::table('pengajuan_skripsi', function (Blueprint $table) {
+            $table->enum('status', ['pending', 'diterima', 'ditolak'])->default('pending');
+            $table->text('catatan_ditolak')->nullable();
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('mahasiswa', function (Blueprint $table) {
+        Schema::table('pengajuan_skripsi', function (Blueprint $table) {
             //
         });
     }

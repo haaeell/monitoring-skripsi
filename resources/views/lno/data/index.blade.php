@@ -31,9 +31,7 @@
                                     <tr>
                                         <th>NIM</th>
                                         <th>Nama</th>
-                                        <th>Judul</th>
                                         <th>Dosen Pembimbing</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -42,9 +40,7 @@
                                         <tr>
                                             <td>{{ $mahasiswa->nim }}</td>
                                             <td>{{ $mahasiswa->nama }}</td>
-                                            <td>{{ $mahasiswa->judul_ta }}</td>
                                             <td>{{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}</td>
-                                            <td>{{ $mahasiswa->status }}</td>
                                             <td>
                                                 <div class="d-flex text-white">
                                                     <a href="#" data-bs-toggle="modal"
@@ -93,8 +89,7 @@
                                                             <dd class="col-sm-8">{{ $mahasiswa->telp }}</dd>
                                                             <dt class="col-sm-4">Alamat</dt>
                                                             <dd class="col-sm-8">{{ $mahasiswa->alamat }}</dd>
-                                                            <dt class="col-sm-4">Judul Tugas Akhir</dt>
-                                                            <dd class="col-sm-8">{{ $mahasiswa->judul_ta }}</dd>
+                                                          
                                                             <dt class="col-sm-4">Dosen Pembimbing</dt>
                                                             <dd class="col-sm-8">
                                                                 {{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}
@@ -176,13 +171,7 @@
                                                                 <label for="edit_alamat" class="form-label">Alamat</label>
                                                                 <textarea class="form-control" id="edit_alamat" name="alamat" required>{{ $mahasiswa->alamat }}</textarea>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="edit_judul_ta" class="form-label">Judul Tugas
-                                                                    Akhir</label>
-                                                                <input type="text" class="form-control"
-                                                                    id="edit_judul_ta" name="judul_ta"
-                                                                    value="{{ $mahasiswa->judul_ta }}">
-                                                            </div>
+                                                
                                                             <div class="mb-3">
                                                                 <label for="pembimbing_id" class="form-label">Dosen
                                                                     Pembimbing</label>
@@ -474,10 +463,6 @@
                         <div class="mb-3">
                             <label for="alamat" class="form-label">Alamat</label>
                             <textarea class="form-control" id="alamat" name="alamat" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="judul_ta" class="form-label">Judul Tugas Akhir</label>
-                            <input type="text" class="form-control" id="judul_ta" name="judul_ta">
                         </div>
                         <div class="mb-3">
                             <label for="pembimbing_id" class="form-label">Pilih Pembimbing</label>

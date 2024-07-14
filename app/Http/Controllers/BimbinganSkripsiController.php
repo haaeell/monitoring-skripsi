@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BimbinganSkripsi;
 use App\Models\Mahasiswa;
+use App\Models\PengajuanSkripsi;
 use App\Notifications\BimbinganBaruNotification;
 use App\Notifications\BalasanBimbinganNotification;
 use Illuminate\Http\Request;
@@ -18,10 +19,14 @@ class BimbinganSkripsiController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role == 'mhs') {
+        if ($user->role == 'mahasiswa') {
 
             $bimbinganSkripsi = BimbinganSkripsi::with('mahasiswa')->get();
-            return view('bimbingan_skripsi.index', compact('bimbinganSkripsi'));
+            $mahasiswa = $user->mahasiswa;
+            $judulSkripsi = PengajuanSkripsi::where('mahasiswa_id', $mahasiswa->id)
+            ->where('status', 'diterima')
+            ->first();
+            return view('bimbingan_skripsi.index', compact('bimbinganSkripsi', 'judulSkripsi'));
         } else {
 
             $pembimbing = $user->pembimbing;

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('telp');
             $table->text('alamat');
-            $table->string('judul_ta')->nullable();
             $table->unsignedBigInteger('pembimbing_id')->nullable();
             $table->foreign('pembimbing_id')->references('id')->on('pembimbing')->onDelete('set null');
             $table->timestamps();

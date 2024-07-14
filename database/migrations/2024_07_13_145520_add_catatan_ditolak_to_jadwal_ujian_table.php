@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('mahasiswa', function (Blueprint $table) {
-            $table->text('keterangan')->nullable();
+        Schema::table('jadwal_ujian', function (Blueprint $table) {
+            $table->text('catatan_ditolak')->nullable()->after('status');
         });
     }
 
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('mahasiswa', function (Blueprint $table) {
+        Schema::table('jadwal_ujian', function (Blueprint $table) {
             //
         });
     }

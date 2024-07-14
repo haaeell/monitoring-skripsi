@@ -8,12 +8,13 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Dashboard - Analytics | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Dashboard | Monitoring Skripsi</title>
 
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets') }}/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon"
+        href="https://almaata.ac.id/wp-content/uploads/2017/05/logo-alma-ata.jpg" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,7 +35,9 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/libs/apex-charts/apex-charts.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+   
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -43,6 +46,9 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets') }}/js/config.js"></script>
 </head>
+<style>
+    @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+</style>
 
 <body>
     <!-- Layout wrapper -->
@@ -67,6 +73,7 @@
 
                 <ul class="menu-inner py-1">
                     <!-- Apps -->
+
                     <li class="menu-item {{ request()->is('home') ? 'active' : '' }}">
                         <a href="{{ route('home') }}" class="menu-link">
                             <i class="menu-icon bx bx-home-circle"></i>
@@ -74,11 +81,27 @@
                         </a>
                     </li>
 
-                    @if (Auth::user()->role == 'lno')
+                    @if (Auth::user()->role == 'admin')
+                        <li class="menu-header small text-uppercase">
+                            <span class="menu-header-text">Data Master</span>
+                        </li>
                         <li class="menu-item {{ request()->is('users*') ? 'active' : '' }}">
                             <a href="{{ route('users.index') }}" class="menu-link">
                                 <i class="menu-icon bx bx-envelope"></i>
                                 <div data-i18n="Email">Data Users</div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ request()->is('judul-skripsi*') ? 'active' : '' }}">
+                            <a href="{{ route('judul-skripsi.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-chat"></i>
+                                <div data-i18n="Chat">Setujui Judul</div>
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item {{ request()->is('jadwal-ujian') ? 'active' : '' }}">
+                            <a href="{{ route('jadwal-ujian.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-calendar"></i>
+                                <div data-i18n="Email"> Jadwal Ujian</div>
                             </a>
                         </li>
                     @endif
@@ -90,24 +113,34 @@
                                 <div data-i18n="Mahasiswa Bimbingan">Mahasiswa Bimbingan</div>
                             </a>
                         </li>
-                    @endif
-
-                    @if (Auth::user()->role == 'pembimbing' || Auth::user()->role == 'mhs')
                         <li class="menu-item {{ request()->is('bimbingan-skripsi*') ? 'active' : '' }}">
                             <a href="{{ route('bimbingan-skripsi.index') }}" class="menu-link">
                                 <i class="menu-icon bx bx-chat"></i>
                                 <div data-i18n="Chat">Bimbingan Skripsi</div>
                             </a>
                         </li>
-                        <li class="menu-item {{ request()->is('profile*') ? 'active' : '' }}">
-                            <a href="{{ route('profile.index') }}" class="menu-link">
-                                <i class="menu-icon bx bx-user"></i>
-                                <div data-i18n="Profile">Profile</div>
+                       
+                        <li class="menu-item {{ request()->is('judul-skripsi*') ? 'active' : '' }}">
+                            <a href="{{ route('judul-skripsi.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-chat"></i>
+                                <div data-i18n="Chat"> Judul Skripsi</div>
                             </a>
                         </li>
                     @endif
 
-                    @if (Auth::user()->role == 'mhs')
+                    @if (Auth::user()->role == 'mahasiswa')
+                        <li class="menu-item {{ request()->is('judul-skripsi*') ? 'active' : '' }}">
+                            <a href="{{ route('judul-skripsi.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-message"></i>
+                                <div data-i18n="judul-skripsi">Judul Skripsi</div>
+                            </a>
+                        </li>
+                        <li class="menu-item {{ request()->is('bimbingan-skripsi*') ? 'active' : '' }}">
+                            <a href="{{ route('bimbingan-skripsi.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-chat"></i>
+                                <div data-i18n="Chat">Bimbingan</div>
+                            </a>
+                        </li>
                         <li class="menu-item {{ request()->is('pesan*') ? 'active' : '' }}">
                             <a href="{{ route('pesan.index') }}" class="menu-link">
                                 <i class="menu-icon bx bx-message"></i>
@@ -120,7 +153,19 @@
                                 <div data-i18n="Riwayat Bimbingan">Riwayat Bimbingan</div>
                             </a>
                         </li>
+                        <li class="menu-item {{ request()->is('jadwal-ujian') ? 'active' : '' }}">
+                            <a href="{{ route('jadwal-ujian.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-calendar"></i>
+                                <div data-i18n="Email"> Jadwal Ujian</div>
+                            </a>
+                        </li>
                     @endif
+                    <li class="menu-item {{ request()->is('profile*') ? 'active' : '' }}">
+                        <a href="{{ route('profile.index') }}" class="menu-link">
+                            <i class="menu-icon bx bx-user"></i>
+                            <div data-i18n="Riwayat Bimbingan">Profile</div>
+                        </a>
+                    </li>
 
 
                 </ul>
@@ -173,11 +218,13 @@
                                             <form action="{{ route('notifications.readAll') }}" method="POST">
                                                 @csrf
                                                 @method('POST')
-                                                <button type="submit" class="dropdown-notifications-all text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Tandai semua sebagai sudah dibaca">
+                                                <button type="submit" class="dropdown-notifications-all text-body"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="Tandai semua sebagai sudah dibaca">
                                                     <i class="bx fs-4 bx-envelope-open"></i>
                                                 </button>
                                             </form>
-                                            
+
                                         </div>
                                     </li>
                                     <li class="dropdown-notifications-list scrollable-container">
@@ -185,25 +232,24 @@
 
 
                                             {{-- MAHASISWA --}}
-                                            @if (Auth::user()->role == 'mhs')
+                                            @if (Auth::user()->role == 'mahasiswa')
                                                 @foreach ($notifications as $notification)
                                                     <div>
-                                                        <a
-                                                        href="{{ route('pesan.index') }}">
-                                                        <li
-                                                            class="list-group-item list-group-item-action dropdown-notifications-item">
-                                                            <div class="d-flex">
-                                                                <div class="flex-grow-1">
-                                                                    <p class="mb-0">
-                                                                        {{ $notification->data['message'] }}
-                                                                    </p>
-                                                                    <small
-                                                                        class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                        <a href="{{ route('pesan.index') }}">
+                                                            <li
+                                                                class="list-group-item list-group-item-action dropdown-notifications-item">
+                                                                <div class="d-flex">
+                                                                    <div class="flex-grow-1">
+                                                                        <p class="mb-0">
+                                                                            {{ $notification->data['message'] }}
+                                                                        </p>
+                                                                        <small
+                                                                            class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                                                    </div>
+
                                                                 </div>
-                                    
-                                                            </div>
-                                                        </li>
-                                                    </a>
+                                                            </li>
+                                                        </a>
                                                     </div>
                                                 @endforeach
                                             @else
@@ -243,9 +289,10 @@
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="{{ Auth::user()->photo }}" alt=""
-                                            class="w-px-30 h-auto rounded-circle" />
+                                        <img src="{{ Auth::user()->photo ? Auth::user()->photo : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt9ISaBFDC88ejiGrYACSt81CFq21QsZ6bow&s' }}" 
+                                        alt="User Photo" class="w-px-30 h-auto rounded-circle" />
                                     </div>
+                                    
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
@@ -253,8 +300,8 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="{{ Auth::user()->photo }}" alt
-                                                            class="w-px-30 h-auto rounded-circle" />
+                                                        <img src="{{ Auth::user()->photo ? Auth::user()->photo : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt9ISaBFDC88ejiGrYACSt81CFq21QsZ6bow&s' }}" 
+                                                        alt="User Photo" class="w-px-30 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
@@ -344,6 +391,12 @@
             $('.datatable').DataTable();
         });
     </script>
+     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+     <script>
+         $(document).ready(function() {
+             $('.select2').select2();
+         });
+     </script>
     @yield('scripts')
     <script src="{{ asset('assets') }}/vendor/libs/popper/popper.js"></script>
     <script src="{{ asset('assets') }}/vendor/js/bootstrap.js"></script>

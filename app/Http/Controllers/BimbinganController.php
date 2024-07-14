@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\BimbinganSkripsi;
 use App\Models\Mahasiswa;
+use App\Models\PengajuanSkripsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,9 @@ class BimbinganController extends Controller
     public function index()
     {
         $mahasiswaBimbingan = Mahasiswa::where('pembimbing_id', Auth::user()->pembimbing->id)->with('user')->get();
-        return view('mahasiswa.bimbingan.index',compact('mahasiswaBimbingan'));
+        $judulSkripsi = PengajuanSkripsi::where('mahasiswa_id', $mahasiswaBimbingan->first()->id)->get();
+        
+        return view('mahasiswa.bimbingan.index',compact('mahasiswaBimbingan', 'judulSkripsi'));
     }
 
     /**

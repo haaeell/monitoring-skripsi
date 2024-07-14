@@ -43,7 +43,6 @@ class MahasiswaController extends Controller
             'email' => 'required|email|unique:users,email',
             'telp' => 'required',
             'alamat' => 'required',
-            'judul_ta' => 'nullable|string',
             'pembimbing_id' => 'nullable|exists:pembimbing,id',
         ]);
 
@@ -52,7 +51,7 @@ class MahasiswaController extends Controller
             'name' => $request->input('nama'),
             'email' => $request->input('email'),
             'password' => bcrypt('password'), // Set a default password or use Hash facade
-            'role' => 'mhs',
+            'role' => 'mahasiswa',
         ]);
 
         $mahasiswa = Mahasiswa::create([
@@ -64,7 +63,6 @@ class MahasiswaController extends Controller
             'email' => $request->input('email'),
             'telp' => $request->input('telp'),
             'alamat' => $request->input('alamat'),
-            'judul_ta' => $request->input('judul_ta'),
             'pembimbing_id' => $request->input('pembimbing_id'),
         ]);
 
@@ -110,7 +108,6 @@ class MahasiswaController extends Controller
         ],
         'telp' => 'required',
         'alamat' => 'required',
-        'judul_ta' => 'nullable|string',
         'pembimbing_id' => 'nullable|exists:pembimbing,id',
     ]);
 
@@ -133,7 +130,6 @@ class MahasiswaController extends Controller
             'email' => $request->input('email'),
             'telp' => $request->input('telp'),
             'alamat' => $request->input('alamat'),
-            'judul_ta' => $request->input('judul_ta'),
             'pembimbing_id' => $request->input('pembimbing_id'),
         ]);
 
