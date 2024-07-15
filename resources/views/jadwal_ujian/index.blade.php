@@ -121,7 +121,12 @@
                                         @elseif($jadwal->status == 'diterima')
                                             <span class="badge bg-success">{{ $jadwal->status }}</span>
                                         @elseif($jadwal->status == 'ditolak')
-                                            <span class="badge bg-danger">{{ $jadwal->status }}</span>
+
+                                        @elseif ($item->status == 'ditolak')
+                                            <span class="badge bg-danger">{{ $item->status }}</span>
+                                            <div>
+                                                <small>Catatan: {{ $item->catatan_ditolak }}</small>
+                                            </div>
                                         @endif
                                     </td>
                                     @if (Auth::user()->role == 'admin')

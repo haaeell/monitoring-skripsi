@@ -59,7 +59,7 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
-            </div>   
+            </div>
         @endif
         <div class="card shadow border-0">
             <div class="card-header">
@@ -67,7 +67,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    @if($riwayatPengajuanSkripsi->isEmpty())
+                    @if ($riwayatPengajuanSkripsi->isEmpty())
                         <p class="text-center">Belum ada riwayat pengajuan skripsi</p>
                     @else
                         <table class="table datatable">
@@ -98,40 +98,50 @@
                                                 <span class="badge bg-success">{{ $item->status }}</span>
                                             @elseif ($item->status == 'ditolak')
                                                 <span class="badge bg-danger">{{ $item->status }}</span>
+                                                <div>
+                                                    <small>Catatan: {{ $item->catatan_ditolak }}</small>
+                                                </div>
                                             @endif
                                         </td>
                                         <td>{{ $item->mahasiswa->pembimbing->user->name }}</td>
                                         <td>
-                                         @if (Auth::user()->role == 'admin')
-                                         @if ($item->status == 'pending')
-                                         <div class="d-flex">
-                                          <form action="{{ route('pengajuan-skripsi.approve', $item->id) }}" method="POST" class="me-2">
-                                              @csrf
-                                              <button type="submit" class="btn btn-sm btn-primary">Setujui</button>
-                                          </form>
-                                          <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                  data-bs-target="#rejectModal{{ $item->id }}">
-                                              Tolak
-                                          </button>
-                                      </div>
-                                         @endif
-                                         @endif
+                                            @if (Auth::user()->role == 'admin')
+                                                @if ($item->status == 'pending')
+                                                    <div class="d-flex">
+                                                        <form action="{{ route('pengajuan-skripsi.approve', $item->id) }}"
+                                                            method="POST" class="me-2">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-primary">Setujui</button>
+                                                        </form>
+                                                        <button type="button" class="btn btn-sm btn-danger"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#rejectModal{{ $item->id }}">
+                                                            Tolak
+                                                        </button>
+                                                    </div>
+                                                @endif
+                                            @endif
                                         </td>
                                     </tr>
                                     <!-- Reject Modal -->
                                     <div class="modal fade" id="rejectModal{{ $item->id }}" tabindex="-1"
-                                         aria-labelledby="rejectModalLabel{{ $item->id }}" aria-hidden="true">
+                                        aria-labelledby="rejectModalLabel{{ $item->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="rejectModalLabel{{ $item->id }}">Tolak Pengajuan Skripsi</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <h5 class="modal-title" id="rejectModalLabel{{ $item->id }}">Tolak
+                                                        Pengajuan Skripsi</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form action="{{ route('pengajuan-skripsi.reject', $item->id) }}" method="POST">
+                                                    <form action="{{ route('pengajuan-skripsi.reject', $item->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         <div class="mb-3">
-                                                            <label for="catatan_ditolak" class="form-label">Catatan Penolakan</label>
+                                                            <label for="catatan_ditolak" class="form-label">Catatan
+                                                                Penolakan</label>
                                                             <textarea class="form-control" id="catatan_ditolak" name="catatan_ditolak" rows="3" required></textarea>
                                                         </div>
                                                         <button type="submit" class="btn btn-danger">Tolak</button>

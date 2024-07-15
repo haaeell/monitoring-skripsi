@@ -123,7 +123,8 @@
                                         <th>Tanggal</th>
                                         <th>Waktu</th>
                                         <th>Ruangan</th>
-                                        <th>Penguji</th>
+                                        <th>Penguji 1</th>
+                                        <th>Penguji 2</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -138,11 +139,10 @@
                                             <td>{{ \Carbon\Carbon::parse($jadwal->waktu)->format('H:i') }}</td>
                                             <td>{{ $jadwal->ruangan }}</td>
                                             <td>
-                                                <ul class="list-unstyled">
-                                                    @foreach ($jadwal->penguji as $penguji)
-                                                        <li><i class="bi bi-person-fill"></i> {{ $penguji->nama }}</li>
-                                                    @endforeach
-                                                </ul>
+                                                {{ $jadwal->penguji1->user->name }}
+                                            </td>
+                                            <td>
+                                                {{ $jadwal->penguji2->user->name }}
                                             </td>
                                         </tr>
                                     @endforeach
