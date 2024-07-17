@@ -17,6 +17,7 @@ class PengajuanSkripsiController extends Controller
     {
         $request->validate([
             'judul_skripsi' => 'required|string|max:255',
+            'abstrak' => 'required|string',
         ]);
         $judulDiterima = PengajuanSkripsi::where('mahasiswa_id', Auth::user()->mahasiswa->id)
                                       ->where('status', 'diterima')
@@ -30,6 +31,7 @@ class PengajuanSkripsiController extends Controller
         PengajuanSkripsi::create([
             'mahasiswa_id' => Auth::user()->mahasiswa->id,
             'judul_skripsi' => $request->judul_skripsi,
+            'abstrak' => $request->abstrak,
             'status' => 'pending',
         ]);
 

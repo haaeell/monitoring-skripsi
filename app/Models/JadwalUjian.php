@@ -10,7 +10,7 @@ class JadwalUjian extends Model
     use HasFactory;
     protected $table = 'jadwal_ujian';
     protected $fillable = [
-        'mahasiswa_id', 'judul', 'kategori', 'tanggal', 'waktu', 'ruangan', 'penguji1_id', 'penguji2_id', 'status', 'catatan_ditolak'
+        'mahasiswa_id', 'judul', 'kategori', 'tanggal', 'waktu', 'ruangan', 'penguji1_id','ec','plagiarsm', 'penguji2_id', 'status', 'catatan_ditolak'
     ];
 
     public function penguji1()

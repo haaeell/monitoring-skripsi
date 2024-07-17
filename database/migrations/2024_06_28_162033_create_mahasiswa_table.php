@@ -22,7 +22,11 @@ return new class extends Migration
             $table->string('telp');
             $table->text('alamat');
             $table->unsignedBigInteger('pembimbing_id')->nullable();
+            $table->unsignedBigInteger('penguji1_id')->nullable();
+            $table->unsignedBigInteger('penguji2_id')->nullable();
             $table->foreign('pembimbing_id')->references('id')->on('pembimbing')->onDelete('set null');
+            $table->foreign('penguji1_id')->references('id')->on('pembimbing')->onDelete('set null');
+            $table->foreign('penguji2_id')->references('id')->on('pembimbing')->onDelete('set null');
             $table->timestamps();
         });
     }

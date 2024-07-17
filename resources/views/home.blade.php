@@ -49,7 +49,30 @@
                         <i class="bi bi-check-circle"></i> Status Bimbingan
                     </div>
                     <div class="card-body">
-                        <h5 class="fw-bold">{{ $statusBimbingan ?? '-' }}</h5>
+                        <h5 class="fw-bold">
+                            @php
+                                $badgeClass = '';
+                                switch($statusBimbingan) {
+                                    case 'acc':
+                                        $badgeClass = 'badge bg-success text-white';
+                                        break;
+                                    case 'revisi':
+                                        $badgeClass = 'badge bg-danger text-white';
+                                        break;
+                                    case 'pending':
+                                        $badgeClass = 'badge bg-warning text-dark';
+                                        break;
+                                    default:
+                                        $badgeClass = 'badge bg-secondary text-white'; // Default badge color
+                                        break;
+                                }
+                            @endphp
+                        
+                            <span class="badge {{ $badgeClass }}">
+                                {{ ucfirst($statusBimbingan) }}
+                            </span>
+                        </h5>
+                        
                     </div>
                 </div>
             </div>

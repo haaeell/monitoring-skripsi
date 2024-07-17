@@ -35,7 +35,7 @@ class HomeController extends Controller
         if (auth()->user()->role == 'mahasiswa') {
             $bimbingan = BimbinganSkripsi::where('mahasiswa_id', auth()->user()->mahasiswa->id)->get();
             $jumlahBimbingan = BimbinganSkripsi::where('mahasiswa_id', auth()->user()->mahasiswa->id)->count();
-            $statusBimbingan = Mahasiswa::where('id', auth()->user()->mahasiswa->id)->first()->keterangan;
+            $statusBimbingan = BimbinganSkripsi::where('id', auth()->user()->mahasiswa->id)->first()->status;
             $terakhirBimbingan = BimbinganSkripsi::where('mahasiswa_id', auth()->user()->mahasiswa->id)->latest()->first();
             $judulDiterima = PengajuanSkripsi::where('mahasiswa_id', auth()->user()->mahasiswa->id)->where('status', 'diterima')->first();
             $jadwalUjian = JadwalUjian::where('mahasiswa_id', auth()->user()->mahasiswa->id)->get();

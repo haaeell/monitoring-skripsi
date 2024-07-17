@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('pembahasan_mhs');
             $table->text('pembahasan_dosen')->nullable();
             $table->string('file')->nullable();
-            $table->enum('status', ['belum dibaca', 'sudah dibaca'])->default('belum dibaca');
+            $table->enum('status', ['pending','acc', 'revisi'])->default('pending');
             $table->timestamps();
 
             $table->foreign('mahasiswa_id')->references('id')->on('mahasiswa')->onDelete('cascade');

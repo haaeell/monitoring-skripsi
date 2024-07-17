@@ -101,13 +101,13 @@ class BimbinganSkripsiController extends Controller
      */
     public function update(Request $request, BimbinganSkripsi $bimbinganSkripsi)
     {
-
         $validatedData = $request->validate([
             'pembahasan_dosen' => 'required',
+            'status' => 'required'
         ]);
 
         $bimbinganSkripsi->pembahasan_dosen = $validatedData['pembahasan_dosen'];
-        $bimbinganSkripsi->status = 'sudah dibaca';
+        $bimbinganSkripsi->status = $validatedData['status'];
         $bimbinganSkripsi->save();
 
         $user = auth()->user();

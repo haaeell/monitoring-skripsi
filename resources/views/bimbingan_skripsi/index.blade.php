@@ -43,16 +43,18 @@
                                         <td>{{ $item->pembahasan_mhs }}</td>
                                         <td><a href="{{ asset($item->file) }}" target="_blank">Lihat File</a></td>
                                         <td>
-                                            @if ($item->status == 'belum dibaca')
+                                            @if ($item->status == 'pending')
+                                                <span class="badge bg-warning text-dark">{{ $item->status }}</span>
+                                            @elseif($item->status == 'acc')
                                                 <span class="badge bg-success">{{ $item->status }}</span>
-                                            @else
-                                                <span class="badge bg-warning">{{ $item->status }}</span>
+                                            @elseif($item->status == 'revisi')
+                                                <span class="badge bg-danger">{{ $item->status }}</span>
                                             @endif
                                         </td>
                                         <td>{{ $item->created_at }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                @if ($item->status == 'belum dibaca')
+                                                @if ($item->status == 'pending')
                                                     <a href="#" class="btn btn-primary me-2" data-bs-toggle="modal"
                                                         data-bs-target="#pesanModal{{ $item->id }}">Balas</a>
                                                 @endif
@@ -86,7 +88,8 @@
                                                             <label for="judulSkripsi" class="form-label">Judul
                                                                 Skripsi</label>
                                                             <input type="text" class="form-control" id="judulSkripsi"
-                                                                value="{{ $item->mahasiswa->judulSkripsi->judul_skripsi }}" required readonly>
+                                                                value="{{ $item->mahasiswa->judulSkripsi->judul_skripsi }}"
+                                                                required readonly>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="pembahasan_mahasiswa" class="form-label">Pembahasan
@@ -98,6 +101,15 @@
                                                                 Dosen</label>
                                                             <textarea class="form-control" id="pembahasan_dosen" name="pembahasan_dosen" rows="3" required></textarea>
                                                         </div>
+                                                        <div class="mb-3">
+                                                            <label for="status" class="form-label">status
+                                                            </label>
+                                                            <select class="form-control" name="status" id="">
+                                                                <option value="acc">ACC</option>
+                                                                <option value="revisi">Revisi</option>
+                                                            </select>
+                                                        </div>
+
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -132,31 +144,33 @@
                 <h4 class="fw-semibold m-0">Judul Skripsi:</h4>
                 <p class="m-0">{{ $judulSkripsi->judul_skripsi ?? '' }} </p>
                 @if ($judulSkripsi == null)
-                <span class="text-danger">*Belum ada judul skripsi yang diterima silakan ajukan judul terlebih dahulu!</span>
-               <div class="col-md-3">
-                <a href="/judul-skripsi" class="btn btn-outline-primary d-block mt-4">Ajukan Judul Skripsi</a>
-               </div>
+                    <span class="text-danger">*Belum ada judul skripsi yang diterima silakan ajukan judul terlebih
+                        dahulu!</span>
+                    <div class="col-md-3">
+                        <a href="/judul-skripsi" class="btn btn-outline-primary d-block mt-4">Ajukan Judul Skripsi</a>
+                    </div>
                 @endif
             </div>
             @if ($judulSkripsi != null)
-            <div class="card-body">
-                <form action="{{ route('bimbingan-skripsi.store') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="mahasiswa_id" value="{{ Auth::user()->mahasiswa->id }}">
-                    <div class="form-group">
-                        <label for="" class="form-label fw-bold d-block">Pilih file pdf</label>
-                        <input type="file" class="form-control" id="file" name="file" accept=".pdf" required>
-                    </div>
-                    <div class="form-group mt-3">
-                        <label for="" class="form-label fw-bold">Pembahasan Mahasiswa</label>
-                        <textarea id="" cols="30" rows="10" class="form-control" name="pembahasan_mhs">Pembahasan Mahasiswa</textarea>
-                    </div>
+                <div class="card-body">
+                    <form action="{{ route('bimbingan-skripsi.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="mahasiswa_id" value="{{ Auth::user()->mahasiswa->id }}">
+                        <div class="form-group">
+                            <label for="" class="form-label fw-bold d-block">Pilih file pdf</label>
+                            <input type="file" class="form-control" id="file" name="file" accept=".pdf"
+                                required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="" class="form-label fw-bold">Pembahasan Mahasiswa</label>
+                            <textarea id="" cols="30" rows="10" class="form-control" name="pembahasan_mhs">Pembahasan Mahasiswa</textarea>
+                        </div>
 
-                    <button type="submit" class="btn btn-primary mt-3">Kirim</button>
-                    <button class="btn btn-danger mt-3">Batal</button>
-                </form>
+                        <button type="submit" class="btn btn-primary mt-3">Kirim</button>
+                        <button class="btn btn-danger mt-3">Batal</button>
+                    </form>
 
-            </div> 
+                </div>
             @endif
         </div>
     @endif

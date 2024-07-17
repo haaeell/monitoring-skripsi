@@ -87,9 +87,11 @@ class JadwalUjianController extends Controller
             'ruangan' => 'nullable|string|max:255',
             'penguji1_id' => 'required|exists:pembimbing,id',
             'penguji2_id' => 'required|exists:pembimbing,id',
+            'ec' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
+            'plagiarsm' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ]);
-
-        JadwalUjian::create([
+    
+        $data = [
             'mahasiswa_id' => Auth::user()->mahasiswa->id,
             'judul' => $request->judul,
             'kategori' => $request->kategori,
@@ -99,8 +101,19 @@ class JadwalUjianController extends Controller
             'penguji1_id' => $request->penguji1_id,
             'penguji2_id' => $request->penguji2_id,
             'status' => 'pending',
-        ]);
-
+        ];
+    
+        if ($request->kategori === 'Pendadaran') {
+            if ($request->hasFile('ec')) {
+                $data['ec'] = $request->file('ec')->store('files/ec', 'public');
+            }
+            if ($request->hasFile('plagiarsm')) {
+                $data['plagiarsm'] = $request->file('plagiarsm')->store('files/plagiarsm', 'public');
+            }
+        }
+    
+        JadwalUjian::create($data);
+    
         return redirect()->back()->with('success', 'Jadwal ujian berhasil diajukan.');
     }
 

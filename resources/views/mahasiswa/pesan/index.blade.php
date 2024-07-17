@@ -57,6 +57,18 @@
                                     <p class="form-control-plaintext">: {{ $item->pembahasan_dosen }}</p>
                                 </div>
                             </div>
+                            <div class="mb-1 row">
+                                <label class="col-sm-2 col-form-label fw-bold">Status</label>
+                                <div class="col-sm-10">
+                                    @if ($item->status == 'pending')
+                                    <span class="badge bg-warning text-dark">{{ $item->status }}</span>
+                                @elseif($item->status == 'acc')
+                                    <span class="badge bg-success">{{ $item->status }}</span>
+                                @elseif($item->status == 'revisi')
+                                    <span class="badge bg-danger">{{ $item->status }}</span>
+                                @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

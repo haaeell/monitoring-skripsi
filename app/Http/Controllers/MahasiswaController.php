@@ -44,6 +44,8 @@ class MahasiswaController extends Controller
             'telp' => 'required',
             'alamat' => 'required',
             'pembimbing_id' => 'nullable|exists:pembimbing,id',
+            'penguji1_id' => 'nullable|exists:pembimbing,id',
+            'penguji2_id' => 'nullable|exists:pembimbing,id',
         ]);
 
         // Create Mahasiswa
@@ -64,6 +66,8 @@ class MahasiswaController extends Controller
             'telp' => $request->input('telp'),
             'alamat' => $request->input('alamat'),
             'pembimbing_id' => $request->input('pembimbing_id'),
+            'penguji1_id' => $request->input('penguji1_id'),
+            'penguji2_id' => $request->input('penguji2_id'),
         ]);
 
         return redirect()->route('users.index')->with('success', 'Mahasiswa berhasil ditambahkan');
@@ -109,6 +113,8 @@ class MahasiswaController extends Controller
         'telp' => 'required',
         'alamat' => 'required',
         'pembimbing_id' => 'nullable|exists:pembimbing,id',
+        'penguji1_id' => 'nullable|exists:pembimbing,id',
+        'penguji2_id' => 'nullable|exists:pembimbing,id',
     ]);
 
     DB::beginTransaction();
@@ -131,6 +137,8 @@ class MahasiswaController extends Controller
             'telp' => $request->input('telp'),
             'alamat' => $request->input('alamat'),
             'pembimbing_id' => $request->input('pembimbing_id'),
+            'penguji1_id' => $request->input('penguji1_id'),
+            'penguji2_id' => $request->input('penguji2_id'),
         ]);
 
         DB::commit();

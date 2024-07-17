@@ -26,6 +26,8 @@ class Mahasiswa extends Model
         'telp',
         'alamat',
         'pembimbing_id',
+        'penguji1_id',
+        'penguji2_id',
     ];
 
     /**
@@ -45,6 +47,14 @@ class Mahasiswa extends Model
     public function pembimbing()
     {
         return $this->belongsTo(Pembimbing::class,'pembimbing_id');
+    }
+    public function penguji1()
+    {
+        return $this->belongsTo(Pembimbing::class,'penguji1_id');
+    }
+    public function penguji2()
+    {
+        return $this->belongsTo(Pembimbing::class,'penguji2_id');
     }
 
     public function bimbinganSkripsi(){

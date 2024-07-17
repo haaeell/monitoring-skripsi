@@ -55,6 +55,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="abstrak" class="form-label">Abstrak <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i
+                                                class="bi bi-journal-text text-primary"></i></span>
+                                        <textarea class="form-control" rows="10" id="abstrak" name="abstrak" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
@@ -80,7 +91,15 @@
                                     <th>Judul Skripsi</th>
                                     <th>Status</th>
                                     <th>DPS</th>
+                                    @if (Auth::user()->role == 'mahasiswa')
+                                        <th>Abstrak</th>
+                                    @elseif(Auth::user()->role == 'pembimbing' )
+                                        <th>Abstrak</th>
+                                    @elseif(Auth::user()->role == 'admin')
+                                    <th>Abstrak</th>
                                     <th>Aksi</th>
+                                    
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -104,8 +123,10 @@
                                             @endif
                                         </td>
                                         <td>{{ $item->mahasiswa->pembimbing->user->name }}</td>
-                                        <td>
-                                            @if (Auth::user()->role == 'admin')
+                                        @if (Auth::user()->role == 'admin')
+                                            <td> {{ $item->abstrak }}</td>
+                                            <td>
+
                                                 @if ($item->status == 'pending')
                                                     <div class="d-flex">
                                                         <form action="{{ route('pengajuan-skripsi.approve', $item->id) }}"
@@ -121,8 +142,11 @@
                                                         </button>
                                                     </div>
                                                 @endif
-                                            @endif
-                                        </td>
+
+                                            </td>
+                                        @else
+                                            <td> {{ $item->abstrak }}</td>
+                                        @endif
                                     </tr>
                                     <!-- Reject Modal -->
                                     <div class="modal fade" id="rejectModal{{ $item->id }}" tabindex="-1"
@@ -130,7 +154,8 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="rejectModalLabel{{ $item->id }}">Tolak
+                                                    <h5 class="modal-title" id="rejectModalLabel{{ $item->id }}">
+                                                        Tolak
                                                         Pengajuan Skripsi</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
