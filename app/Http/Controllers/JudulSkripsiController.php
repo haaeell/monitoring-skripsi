@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mahasiswa;
+use App\Models\Pembimbing;
 use App\Models\PengajuanSkripsi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,15 +13,40 @@ class JudulSkripsiController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        if(Auth::user()->role == 'mahasiswa') {
-            $riwayatPengajuanSkripsi = PengajuanSkripsi::where('mahasiswa_id', Auth::user()->mahasiswa->id)->get();
-        } else {
-            $riwayatPengajuanSkripsi = PengajuanSkripsi::all();
+        $angkatanFilter = $request->input('angkatan');
+    
+        // Inisialisasi query berdasarkan peran pengguna
+        $riwayatPengajuanSkripsiQuery = PengajuanSkripsi::query();
+    
+        if (Auth::user()->role == 'mahasiswa') {
+            $riwayatPengajuanSkripsiQuery->where('mahasiswa_id', Auth::user()->mahasiswa->id);
         }
-        return view('judul_skripsi.index', compact('riwayatPengajuanSkripsi'));
+    
+        if ($angkatanFilter) {
+            // Filter berdasarkan angkatan jika ada
+            $riwayatPengajuanSkripsiQuery->whereHas('mahasiswa', function ($query) use ($angkatanFilter) {
+                $query->where('angkatan', $angkatanFilter);
+            });
+        }
+    
+        if (Auth::user()->role == "pembimbing") {
+            // Pembimbing hanya melihat status 'diterima'
+            $riwayatPengajuanSkripsiQuery->where('status', 'diterima');
+        }
+    
+        // Ambil data sesuai filter yang diterapkan
+        $riwayatPengajuanSkripsi = $riwayatPengajuanSkripsiQuery->get();
+    
+        // Ambil opsi angkatan untuk filter
+        $angkatanOptions = Mahasiswa::distinct()->pluck('angkatan')->sort()->toArray();
+        $dpsList = Pembimbing::all();
+    
+        return view('judul_skripsi.index', compact('riwayatPengajuanSkripsi', 'angkatanOptions','dpsList'));
     }
+    
+
 
     /**
      * Show the form for creating a new resource.

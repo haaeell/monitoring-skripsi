@@ -10,7 +10,7 @@ class PengajuanSkripsi extends Model
     use HasFactory;
 
     protected $table = 'pengajuan_skripsi';
-    protected $fillable = ['mahasiswa_id', 'judul_skripsi','abstrak', 'status', 'catatan_ditolak'];
+    protected $fillable = ['mahasiswa_id', 'judul_skripsi','abstrak', 'status', 'catatan_ditolak','dps'];
 
     public function mahasiswa()
     {

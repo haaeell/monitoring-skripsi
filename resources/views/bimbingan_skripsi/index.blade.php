@@ -8,17 +8,32 @@
                 <h4 class="fw-semibold m-0"> Monitoring Bimbingan Skripsi</h4>
             </div>
             <div class="card-body">
-                <form action="{{ route('bimbingan-skripsi.index') }}" method="GET">
+                <form method="GET" action="{{ route('bimbingan-skripsi.index') }}">
                     <div class="mb-3">
-                        <label for="mahasiswa" class="form-label">Pilih Mahasiswa</label>
-                        <select class="form-select" id="mahasiswa" name="mahasiswa_id" required>
-                            <option value="">Pilih Mahasiswa</option>
-                            @foreach ($mahasiswas as $mahasiswa)
-                                <option value="{{ $mahasiswa->id }}">{{ $mahasiswa->nama }}</option>
+                        <label for="angkatan" class="form-label">Filter Angkatan</label>
+                        <select class="form-select select2" id="angkatan" name="angkatan" onchange="this.form.submit()">
+                            <option value="">Semua Angkatan</option>
+                            @foreach ($angkatanOptions as $angkatan)
+                                <option value="{{ $angkatan }}" {{ request('angkatan') == $angkatan ? 'selected' : '' }}>
+                                    {{ $angkatan }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Lihat Bimbingan</button>
+                    
+                    @if(!empty(request('angkatan')))
+                    <div class="mb-3">
+                        <label for="mahasiswa_id" class="form-label">Pilih Mahasiswa</label>
+                        <select class="form-select select2" id="mahasiswa_id" name="mahasiswa_id" onchange="this.form.submit()">
+                            <option value="">Semua Mahasiswa</option>
+                            @foreach ($mahasiswaOptions as $mahasiswa)
+                                <option value="{{ $mahasiswa->id }}" {{ request('mahasiswa_id') == $mahasiswa->id ? 'selected' : '' }}>
+                                    {{ $mahasiswa->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                 </form>
 
                 @if (isset($bimbinganSkripsi))

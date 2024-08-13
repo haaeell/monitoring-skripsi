@@ -24,13 +24,21 @@ class BimbinganSkripsiController extends Controller
             $bimbinganSkripsi = BimbinganSkripsi::with('mahasiswa')->get();
             $mahasiswa = $user->mahasiswa;
             $judulSkripsi = PengajuanSkripsi::where('mahasiswa_id', $mahasiswa->id)
-            ->where('status', 'diterima')
-            ->first();
+                ->where('status', 'diterima')
+                ->first();
             return view('bimbingan_skripsi.index', compact('bimbinganSkripsi', 'judulSkripsi'));
         } else {
 
             $pembimbing = $user->pembimbing;
-            $mahasiswas = $pembimbing->mahasiswa()->get();
+
+            // Get unique angkatan options for the select field
+            $angkatanOptions = Mahasiswa::distinct()->pluck('angkatan');
+
+            $mahasiswas = $pembimbing->mahasiswa()->when($request->angkatan, function ($query) use ($request) {
+                return $query->where('angkatan', $request->angkatan);
+            })->get();
+
+            $mahasiswaOptions = $mahasiswas;
 
             $bimbinganSkripsi = null;
             if ($request->has('mahasiswa_id')) {
@@ -38,9 +46,16 @@ class BimbinganSkripsiController extends Controller
                 $bimbinganSkripsi = BimbinganSkripsi::where('mahasiswa_id', $mahasiswa_id)->with('mahasiswa')->get();
             }
 
-            return view('bimbingan_skripsi.index', compact('mahasiswas', 'bimbinganSkripsi'));
+            $mahasiswaBimbingan = $mahasiswas->map(function ($mahasiswa) {
+                $mahasiswa->judulSkripsi = PengajuanSkripsi::where('mahasiswa_id', $mahasiswa->id)->where('status', 'diterima')->first();
+                return $mahasiswa;
+            });
+
+
+            return view('bimbingan_skripsi.index', compact('angkatanOptions', 'mahasiswaOptions', 'mahasiswaBimbingan', 'bimbinganSkripsi'));
         }
     }
+
 
     /**
      * Show the form for creating a new resource.

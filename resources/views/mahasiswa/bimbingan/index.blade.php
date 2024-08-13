@@ -6,6 +6,19 @@
         <h4 class="fw-semibold m-0"> Monitoring Bimbingan Skripsi</h4>
     </div>
     <div class="card-body">
+        <form method="GET" action="{{ route('bimbingan.index') }}">
+            <div class="mb-3">
+                <label for="angkatan" class="form-label">Filter Angkatan</label>
+                <select class="form-select select2" id="angkatan" name="angkatan" onchange="this.form.submit()">
+                    <option value="">Semua Angkatan</option>
+                    @foreach ($angkatanOptions as $angkatan)
+                        <option value="{{ $angkatan }}" {{ request('angkatan') == $angkatan ? 'selected' : '' }}>
+                            {{ $angkatan }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </form>
         <div class="table-responsive">
             <table class="table datatable">
                 <thead>

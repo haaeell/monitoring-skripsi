@@ -25,15 +25,27 @@
                 </div>
                 <div class="card shadow border-0">
                     <div class="card-body">
+                        <form method="GET" action="{{ route('users.index') }}">
+                            <div class="mb-3">
+                                <label for="angkatan" class="form-label">Filter Angkatan</label>
+                                <select class="form-select" id="angkatan" name="angkatan" onchange="this.form.submit()">
+                                    <option value="">Semua Angkatan</option>
+                                    @foreach ($angkatanOptions as $angkatan)
+                                        <option value="{{ $angkatan }}" {{ request('angkatan') == $angkatan ? 'selected' : '' }}>
+                                            {{ $angkatan }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </form>
                         <div class="table-responsive">
                             <table class="table table-striped datatable">
                                 <thead>
                                     <tr>
                                         <th>NIM</th>
                                         <th>Nama</th>
-                                        <th>Dosen Pembimbing</th>
-                                        <th>Penguji 1</th>
-                                        <th>Penguji 2</th>
+                                        <th>Status Proposal</th>
+                                        <th>Status Pendadaran</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -42,9 +54,12 @@
                                         <tr>
                                             <td>{{ $mahasiswa->nim }}</td>
                                             <td>{{ $mahasiswa->nama }}</td>
-                                            <td>{{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}</td>
-                                            <td>{{ $mahasiswa->penguji1->user->name }}</td>
-                                            <td>{{ $mahasiswa->penguji2->user->name }}</td>
+                                            <td>
+                                                {{ $mahasiswa->status_sidang['proposal'] ? 'Sudah' : 'Belum' }}
+                                            </td>
+                                            <td>
+                                                {{ $mahasiswa->status_sidang['pendadaran'] ? 'Sudah' : 'Belum' }}
+                                            </td>
                                             <td>
                                                 <div class="d-flex text-white">
                                                     <a href="#" data-bs-toggle="modal"
@@ -94,10 +109,7 @@
                                                             <dt class="col-sm-4">Alamat</dt>
                                                             <dd class="col-sm-8">{{ $mahasiswa->alamat }}</dd>
                                                           
-                                                            <dt class="col-sm-4">Dosen Pembimbing</dt>
-                                                            <dd class="col-sm-8">
-                                                                {{ $mahasiswa->pembimbing ? $mahasiswa->pembimbing->nama : '-' }}
-                                                            </dd>
+                                                          
                                                         </dl>
                                                     </div>
                                                     <div class="modal-footer">
@@ -176,48 +188,7 @@
                                                                 <textarea class="form-control" id="edit_alamat" name="alamat" required>{{ $mahasiswa->alamat }}</textarea>
                                                             </div>
                                                 
-                                                            <div class="mb-3">
-                                                                <label for="pembimbing_id" class="form-label">Dosen
-                                                                    Pembimbing</label>
-                                                                <select class="form-control" id="pembimbing_id"
-                                                                    name="pembimbing_id">
-                                                                    <option value="">Pilih Pembimbing</option>
-                                                                    @foreach ($pembimbings as $pembimbing)
-                                                                        <option value="{{ $pembimbing->id }}"
-                                                                            {{ $mahasiswa->pembimbing_id == $pembimbing->id ? 'selected' : '' }}>
-                                                                            {{ $pembimbing->nama }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="penguji1_id" class="form-label">Dosen
-                                                                    Penguji 1</label>
-                                                                <select class="form-control" id="penguji1_id"
-                                                                    name="penguji1_id">
-                                                                    <option value="">Pilih Pembimbing</option>
-                                                                    @foreach ($pembimbings as $pembimbing)
-                                                                        <option value="{{ $pembimbing->id }}"
-                                                                            {{ $mahasiswa->penguji1_id == $pembimbing->id ? 'selected' : '' }}>
-                                                                            {{ $pembimbing->nama }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="penguji2_id" class="form-label">Dosen
-                                                                    Penguji 2</label>
-                                                                <select class="form-control" id="penguji2_id"
-                                                                    name="penguji2_id">
-                                                                    <option value="">Pilih Pembimbing</option>
-                                                                    @foreach ($pembimbings as $pembimbing)
-                                                                        <option value="{{ $pembimbing->id }}"
-                                                                            {{ $mahasiswa->penguji2_id == $pembimbing->id ? 'selected' : '' }}>
-                                                                            {{ $pembimbing->nama }}
-                                                                        </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
+                                                           
                                                             <button type="submit" class="btn btn-primary">Simpan
                                                                 Perubahan</button>
                                                         </form>
@@ -501,34 +472,7 @@
                             <label for="alamat" class="form-label">Alamat</label>
                             <textarea class="form-control" id="alamat" name="alamat" required></textarea>
                         </div>
-                        <div class="mb-3">
-                            <label for="pembimbing_id" class="form-label">Pilih Pembimbing</label>
-                            <select class="form-control" id="pembimbing_id" name="pembimbing_id">
-                                <option value="">Pilih Pembimbing</option>
-                                @foreach ($pembimbings as $pembimbing)
-                                    <option value="{{ $pembimbing->id }}">{{ $pembimbing->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="penguji1_id" class="form-label">Pilih Penguji 1</label>
-                            <select class="form-control" id="penguji1_id" name="penguji1_id">
-                                <option value="">Pilih Pembimbing</option>
-                                @foreach ($pembimbings as $pembimbing)
-                                    <option value="{{ $pembimbing->id }}">{{ $pembimbing->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="penguji2_id" class="form-label">Pilih Penguji 2 </label>
-                            <select class="form-control" id="penguji2_id" name="penguji2_id">
-                                <option value="">Pilih Pembimbing</option>
-                                @foreach ($pembimbings as $pembimbing)
-                                    <option value="{{ $pembimbing->id }}">{{ $pembimbing->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
+                       
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </form>
                 </div>

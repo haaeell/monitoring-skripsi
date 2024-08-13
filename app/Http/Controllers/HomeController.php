@@ -10,6 +10,8 @@ use App\Models\PengajuanSkripsi;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class HomeController extends Controller
 {
@@ -30,27 +32,44 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
         $jumlahDosen = Pembimbing::count();
         $jumlahMahasiswa = Mahasiswa::count();
-        if (auth()->user()->role == 'mahasiswa') {
-            $bimbingan = BimbinganSkripsi::where('mahasiswa_id', auth()->user()->mahasiswa->id)->get();
-            $jumlahBimbingan = BimbinganSkripsi::where('mahasiswa_id', auth()->user()->mahasiswa->id)->count();
-            $statusBimbingan = BimbinganSkripsi::where('id', auth()->user()->mahasiswa->id)->first()->status;
-            $terakhirBimbingan = BimbinganSkripsi::where('mahasiswa_id', auth()->user()->mahasiswa->id)->latest()->first();
-            $judulDiterima = PengajuanSkripsi::where('mahasiswa_id', auth()->user()->mahasiswa->id)->where('status', 'diterima')->first();
-            $jadwalUjian = JadwalUjian::where('mahasiswa_id', auth()->user()->mahasiswa->id)->get();
+
+        $jumlahMahasiswaPerAngkatan = Mahasiswa::select('angkatan', DB::raw('count(*) as total'))
+            ->groupBy('angkatan')
+            ->get();
+
+        $jumlahMahasiswaSeminarPerAngkatan = Mahasiswa::select('angkatan')
+            ->join('jadwal_ujian', 'mahasiswa.id', '=', 'jadwal_ujian.mahasiswa_id')
+            ->select('mahasiswa.angkatan', DB::raw('count(distinct jadwal_ujian.mahasiswa_id) as total'))
+            ->whereIn('jadwal_ujian.kategori', ['Proposal', 'Pendadaran'])
+            ->groupBy('mahasiswa.angkatan')
+            ->get();
+
+        if ($user->role == 'mahasiswa') {
+            $bimbingan = BimbinganSkripsi::where('mahasiswa_id', $user->mahasiswa->id)->get();
+            $jumlahBimbingan = BimbinganSkripsi::where('mahasiswa_id', $user->mahasiswa->id)->count();
+            $statusBimbingan = BimbinganSkripsi::where('id', $user->mahasiswa->id)->first()->status ?? null;
+            $terakhirBimbingan = BimbinganSkripsi::where('mahasiswa_id', $user->mahasiswa->id)->latest()->first();
+            $judulDiterima = PengajuanSkripsi::where('mahasiswa_id', $user->mahasiswa->id)->where('status', 'diterima')->first();
+            $jadwalUjian = JadwalUjian::where('mahasiswa_id', $user->mahasiswa->id)->get();
             return view('home', compact('jumlahBimbingan', 'bimbingan', 'statusBimbingan', 'terakhirBimbingan', 'judulDiterima', 'jadwalUjian'));
         }
 
         if (Auth::user()->role == 'pembimbing') {
-            $pembimbingId = auth()->user()->pembimbing->id;
-
-            $jadwalMenguji = JadwalUjian::where(function ($query) use ($pembimbingId) {
+            $pembimbing = $user->pembimbing;
+            $pembimbingId = $pembimbing ? $pembimbing->id : null;
+            $mahasiswaIds = $pembimbing ? $pembimbing->mahasiswa()->pluck('id') : [];
+            $jadwalMenguji = JadwalUjian::where(function ($query) use ($pembimbingId, $mahasiswaIds) {
                 $query->where('penguji1_id', $pembimbingId)
-                    ->orWhere('penguji2_id', $pembimbingId);
+                    ->orWhere('penguji2_id', $pembimbingId)
+                    ->orWhereIn('mahasiswa_id', $mahasiswaIds);
             })->where('tanggal', '>', Carbon::today())
                 ->where('status', 'diterima')
                 ->get();
+
+            
             $jumlahMahasiswaBimbingan = Mahasiswa::where('pembimbing_id', $pembimbingId)->count();
             $jumlahSidangProposal = JadwalUjian::where('kategori', 'Proposal')
                 ->where(function ($query) use ($pembimbingId) {
@@ -66,6 +85,6 @@ class HomeController extends Controller
 
             return view('home', compact('jadwalMenguji', 'jumlahMahasiswaBimbingan', 'jumlahSidangProposal', 'jumlahSidangPendadaran'));
         }
-        return view('home', compact('jumlahDosen', 'jumlahMahasiswa'));
+        return view('home', compact('jumlahDosen', 'jumlahMahasiswa', 'jumlahMahasiswaPerAngkatan','jumlahMahasiswaSeminarPerAngkatan'));
     }
 }

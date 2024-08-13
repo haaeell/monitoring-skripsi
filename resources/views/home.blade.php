@@ -17,12 +17,70 @@
             </div>
             <div class="col-md-4">
                 <div class="card shadow  border border-primary">
-                    <div class="card-header">Data Mahasiswa</div>
+                    <div class="card-header">Jumlah Mahasiswa</div>
 
                     <div class="card-body">
                      <p>
                         {{$jumlahMahasiswa}}
                      </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow border-primary my-3">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Angkatan</th>
+                                    <th>Jumlah Mahasiswa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($jumlahMahasiswaPerAngkatan as $angkatan)
+                                <tr>
+                                    <td>{{ $angkatan->angkatan }}</td>
+                                    <td>{{ $angkatan->total }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="card shadow border-primary my-3">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Angkatan</th>
+                                    <th>Jumlah Mahasiswa</th>
+                                    <th>Jumlah Mahasiswa Sempro</th>
+                                    <th>Jumlah Mahasiswa Pendadaran</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($jumlahMahasiswaPerAngkatan as $angkatan)
+                                <tr>
+                                    <td>{{ $angkatan->angkatan }}</td>
+                                    <td>{{ $angkatan->total }}</td>
+                                    @php
+                                        $seminar = $jumlahMahasiswaSeminarPerAngkatan->firstWhere('angkatan', $angkatan->angkatan);
+                                        $jumlahSempro = $seminar ? $seminar->total : 0;
+                                        $jumlahPendadaran = $seminar ? $seminar->total : 0;
+                                    @endphp
+                                    <td>{{ $jumlahSempro }}</td>
+                                    <td>{{ $jumlahPendadaran }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        
                     </div>
                 </div>
             </div>
@@ -145,7 +203,6 @@
                                         <th>Kategori</th>
                                         <th>Tanggal</th>
                                         <th>Waktu</th>
-                                        <th>Ruangan</th>
                                         <th>Penguji 1</th>
                                         <th>Penguji 2</th>
                                     </tr>
@@ -160,7 +217,6 @@
                                             <td>{{ $jadwal->kategori }}</td>
                                             <td>{{ \Carbon\Carbon::parse($jadwal->tanggal)->format('j F Y') }}</td>
                                             <td>{{ \Carbon\Carbon::parse($jadwal->waktu)->format('H:i') }}</td>
-                                            <td>{{ $jadwal->ruangan }}</td>
                                             <td>
                                                 {{ $jadwal->penguji1->user->name }}
                                             </td>
@@ -232,7 +288,6 @@
                                         <th>Kategori</th>
                                         <th>Tanggal</th>
                                         <th>Waktu</th>
-                                        <th>Ruangan</th>
                                         <th>Penguji 1</th>
                                         <th>Penguji 2</th>
                                     </tr>
@@ -247,7 +302,6 @@
                                            <td>{{ $item->kategori }}</td>
                                            <td>{{ $item->tanggal }}</td>
                                            <td>{{ $item->waktu }}</td>
-                                           <td>{{ $item->ruangan }}</td>
                                            <td>
                                                {{ $item->penguji1->user->name }}
                                            </td>

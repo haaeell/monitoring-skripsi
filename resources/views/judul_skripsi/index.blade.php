@@ -44,6 +44,28 @@
                                     </div>
                                 </div>
                             </div>
+                            @foreach ($dpsList as $dps)
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="dps_{{ $dps->id }}" class="form-label">DPS {{ $loop->iteration }}
+                                            <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i
+                                                    class="bi bi-calendar text-primary"></i></span>
+                                            <select class="form-select" id="dps_{{ $dps->id }}" name="dps">
+                                                @foreach ($dpsList as $option)
+                                                    <option value="{{ $option->id }}"
+                                                        {{ $dps->id == $option->id ? 'selected' : '' }}>
+                                                        {{ $option->nama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label for="judul_skripsi" class="form-label">Judul Skripsi <span
@@ -77,109 +99,161 @@
                 <h5 class="fw-semibold text-primary m-0">Riwayat Pengajuan Judul Skripsi</h5>
             </div>
             <div class="card-body">
+                @if (Auth::user()->role == 'admin' || Auth::user()->role == 'pembimbing')
+                    <form method="GET" action="{{ route('judul-skripsi.index') }}">
+                        <div class="mb-3">
+                            <label for="angkatan" class="form-label">Filter Angkatan</label>
+                            <select class="form-select" id="angkatan" name="angkatan" onchange="this.form.submit()">
+                                <option value="">Semua Angkatan</option>
+                                @foreach ($angkatanOptions as $angkatan)
+                                    <option value="{{ $angkatan }}"
+                                        {{ request('angkatan') == $angkatan ? 'selected' : '' }}>
+                                        {{ $angkatan }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </form>
+                @endif
                 <div class="table-responsive">
-                    @if ($riwayatPengajuanSkripsi->isEmpty())
-                        <p class="text-center">Belum ada riwayat pengajuan skripsi</p>
-                    @else
-                        <table class="table datatable">
-                            <thead>
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>NIM</th>
-                                    <th>Nama</th>
-                                    <th>Angkatan</th>
-                                    <th>Judul Skripsi</th>
-                                    <th>Status</th>
-                                    <th>DPS</th>
-                                    @if (Auth::user()->role == 'mahasiswa')
-                                        <th>Abstrak</th>
-                                    @elseif(Auth::user()->role == 'pembimbing' )
-                                        <th>Abstrak</th>
-                                    @elseif(Auth::user()->role == 'admin')
+                    <table class="table ">
+                        <thead>
+                            <tr>
+                                <th>NIM</th>
+                                <th>Nama</th>
+                                <th>Angkatan</th>
+                                <th>Tanggal Pengajuan</th>
+                                <th>Judul Skripsi</th>
+                                <th>Status</th>
+                                <th>DPS</th>
+                                @if (Auth::user()->role == 'pembimbing')
+                                    <th>Abstrak</th>
+                                @elseif(Auth::user()->role == 'admin')
                                     <th>Abstrak</th>
                                     <th>Aksi</th>
-                                    
-                                    @endif
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($riwayatPengajuanSkripsi as $item)
-                                    <tr>
-                                        <td>{{ $item->created_at->translatedFormat('d F Y H:i') }}</td>
-                                        <td>{{ $item->mahasiswa->nim }}</td>
-                                        <td>{{ $item->mahasiswa->nama }}</td>
-                                        <td>{{ $item->mahasiswa->angkatan }}</td>
-                                        <td>{{ $item->judul_skripsi }}</td>
-                                        <td>
-                                            @if ($item->status == 'pending')
-                                                <span class="badge bg-warning">{{ $item->status }}</span>
-                                            @elseif ($item->status == 'diterima')
-                                                <span class="badge bg-success">{{ $item->status }}</span>
-                                            @elseif ($item->status == 'ditolak')
-                                                <span class="badge bg-danger">{{ $item->status }}</span>
-                                                <div>
-                                                    <small>Catatan: {{ $item->catatan_ditolak }}</small>
-                                                </div>
-                                            @endif
-                                        </td>
-                                        <td>{{ $item->mahasiswa->pembimbing->user->name }}</td>
-                                        @if (Auth::user()->role == 'admin')
-                                            <td> {{ $item->abstrak }}</td>
-                                            <td>
+                                @else
+                                    <th>Abstrak</th>
+                                @endif
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $previousNIM = null;
+                            @endphp
 
-                                                @if ($item->status == 'pending')
-                                                    <div class="d-flex">
-                                                        <form action="{{ route('pengajuan-skripsi.approve', $item->id) }}"
-                                                            method="POST" class="me-2">
-                                                            @csrf
-                                                            <button type="submit"
-                                                                class="btn btn-sm btn-primary">Setujui</button>
-                                                        </form>
-                                                        <button type="button" class="btn btn-sm btn-danger"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#rejectModal{{ $item->id }}">
-                                                            Tolak
-                                                        </button>
-                                                    </div>
-                                                @endif
+                            @foreach ($riwayatPengajuanSkripsi->groupBy('mahasiswa.nim') as $nim => $items)
+                                <tr>
+                                    <td rowspan="{{ $items->count() }}">{{ $items->first()->mahasiswa->nim }}</td>
+                                    <td rowspan="{{ $items->count() }}">{{ $items->first()->mahasiswa->nama }}</td>
+                                    <td rowspan="{{ $items->count() }}">{{ $items->first()->mahasiswa->angkatan }}</td>
 
-                                            </td>
-                                        @else
-                                            <td> {{ $item->abstrak }}</td>
-                                        @endif
-                                    </tr>
-                                    <!-- Reject Modal -->
-                                    <div class="modal fade" id="rejectModal{{ $item->id }}" tabindex="-1"
-                                        aria-labelledby="rejectModalLabel{{ $item->id }}" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="rejectModalLabel{{ $item->id }}">
-                                                        Tolak
-                                                        Pengajuan Skripsi</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="{{ route('pengajuan-skripsi.reject', $item->id) }}"
-                                                        method="POST">
-                                                        @csrf
-                                                        <div class="mb-3">
-                                                            <label for="catatan_ditolak" class="form-label">Catatan
-                                                                Penolakan</label>
-                                                            <textarea class="form-control" id="catatan_ditolak" name="catatan_ditolak" rows="3" required></textarea>
+                                    @foreach ($items as $index => $item)
+                                        @if ($index > 0)
+                                <tr>
+                            @endif
+
+                            <td>{{ $item->created_at->isoFormat('dddd, D MMMM Y') }}</td>
+
+                            <td>{{ $item->judul_skripsi }}</td>
+                            <td>
+                                @if ($item->status == 'pending')
+                                    <span class="badge bg-warning">{{ $item->status }}</span>
+                                @elseif ($item->status == 'diterima')
+                                    <span class="badge bg-success">{{ $item->status }}</span>
+                                @elseif ($item->status == 'ditolak')
+                                    <span class="badge bg-danger">{{ $item->status }}</span>
+                                    <div>
+                                        <small>Catatan: {{ $item->catatan_ditolak }}</small>
+                                    </div>
+                                @endif
+                            </td>
+                            <td>{{ $item->mahasiswa->pembimbing->user->name ?? $item->dps }}</td>
+                            @if (Auth::user()->role == 'admin')
+                                <td>{{ $item->abstrak }}</td>
+                                <td>
+                                    @if ($item->status == 'pending')
+                                        <div class="d-flex">
+                                            <!-- Button to trigger the modal -->
+                                            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                data-bs-target="#approvalModal">
+                                                Setujui
+                                            </button>
+                                            <!-- Approval Modal -->
+                                            <div class="modal fade" id="approvalModal" tabindex="-1"
+                                                aria-labelledby="approvalModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="approvalModalLabel">Pilih Dosen
+                                                                Penguji</h5>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <button type="submit" class="btn btn-danger">Tolak</button>
-                                                    </form>
+                                                        <form action="{{ route('pengajuan-skripsi.approve', $item->id) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <input type="hidden" value="{{ $item->dps }}" name="dps">
+                                                                    <input type="hidden" value="{{ $item->mahasiswa_id }}" name="user_id">
+                                                                    <label for="penguji1" class="form-label">Dosen Penguji
+                                                                        1</label>
+                                                                    <select name="penguji1_id" id="penguji1"
+                                                                        class="form-select" required>
+                                                                        <option value="" disabled selected>Pilih
+                                                                            Dosen Penguji 1</option>
+                                                                        @foreach ($dpsList as $d)
+                                                                            <option value="{{ $d->id }}">
+                                                                                {{ $d->nama }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="penguji2_id" class="form-label">Dosen Penguji
+                                                                        2</label>
+                                                                    <select name="penguji2_id" id="penguji2"
+                                                                        class="form-select" required>
+                                                                        <option value="" disabled selected>Pilih
+                                                                            Dosen Penguji 2</option>
+                                                                        @foreach ($dpsList as $d)
+                                                                            <option value="{{ $d->id }}">
+                                                                                {{ $d->nama }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Simpan</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                data-bs-target="#rejectModal{{ $item->id }}">
+                                                Tolak
+                                            </button>
                                         </div>
-                                    </div>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @endif
+                                    @endif
+                                </td>
+                            @else
+                                <td>{{ $item->abstrak }}</td>
+                            @endif
+
+                            @if ($index > 0)
+                                </tr>
+                            @endif
+                            @endforeach
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </div>
 

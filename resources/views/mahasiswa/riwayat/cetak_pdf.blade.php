@@ -1,21 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Riwayat Bimbingan Skripsi</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Bimbingan Skripsi</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            font-size: 12pt;
+        }
+        .container {
+            margin: 30px;
         }
         .header {
-            text-align: center;
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
         .header img {
-            width: 200px;
+            width: 70px;
+            margin-right: 20px;
         }
-        .header h2, .header h3 {
-            margin: 5px 0;
+        .header-text {
+            flex: 1;
+        }
+        .header h1, .header h2, .header p {
+            margin: 0;
+            padding: 0;
+        }
+        .header h1 {
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .header h2 {
+            font-size: 14pt;
+            font-weight: normal;
+        }
+        .header p {
+            font-size: 10pt;
+            margin-top: 10px;
         }
         table {
             width: 100%;
@@ -28,9 +55,6 @@
         th, td {
             padding: 10px;
             text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
         }
         .no-border {
             border: none;
@@ -45,63 +69,76 @@
         .signature-table td {
             border: none;
             text-align: center;
-            padding: 40px 0 0 0;
-        }
-        .page-break {
-            page-break-after: always;
+            padding-top: 40px;
         }
     </style>
 </head>
 <body>
     @foreach ($bimbingan as $item)
-    <div class="header">
-        {{-- <img src="{{ public_path('almaatadfix.png') }}" alt="Logo"> --}}
-        <h2>FAKULTAS KOMPUTER DAN TEKNIK</h2>
-        <h3>UNIVERSITAS ALMA ATA YOGYAKARTA</h3>
-        <p>Jl. Brawijaya No.99, Jadan, Tamantirto, Kec. Kasihan, Bantul, Daerah Istimewa Yogyakarta 55183<br>Telp. (0274) 4342288</p>
+    <div class="container">
+        <div class="header">
+            <img src="{{ public_path('assets/img/logo-alma-ata.jpg') }}" alt="Logo">
+            <div class="header-text">
+                <h1>FAKULTAS KOMPUTER DAN TEKNIK</h1>
+                <h2>UNIVERSITAS ALMA ATA YOGYAKARTA</h2>
+                <p>Jl. Brawijaya No.99, Jadan, Tamantirto, Kec. Kasihan, Bantul, Daerah Istimewa Yogyakarta 55183<br>Telp. (0274) 4342288</p>
+            </div>
+        </div>
+        <hr>
+
+        <table class="">
+            <tr>
+                <td>Nama</td>
+                <td colspan="3">: {{ $item->mahasiswa->nama }}</td>
+            </tr>
+            <tr>
+                <td>NIM</td>
+                <td colspan="3">: {{ $item->mahasiswa->nim }}</td>
+            </tr>
+            <tr>
+                <td>Prodi</td>
+                <td colspan="3">: {{ $item->mahasiswa->prodi }}</td>
+            </tr>
+            <tr>
+                <td>Pembimbing</td>
+                <td colspan="3">: {{ $item->mahasiswa->pembimbing->nama }}</td>
+            </tr>
+            <tr>
+                <td>Judul</td>
+                <td colspan="3">: {{ $item->mahasiswa->judulSkripsi->judul_skripsi }}</td>
+            </tr>
+        </table>
+
+        <div style="border: 1px solid; padding:10px">
+            <div style="border-bottom: 1px solid">
+                <p>Pembahasan Mahasiswa</p>
+                <p>{{ $item->pembahasan_mhs }}</p>
+            </div>
+            <div>
+                <p>Pembahasan Pembimbing</p>
+                <p>{{ $item->pembahasan_dosen }}</p>
+            </div>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <td style="border: 1px solid black; padding: 8px;">Tanggal</td>
+                <td style="border: 1px solid black; padding: 8px;">Ttd mahasiswa</td>
+                <td style="border: 1px solid black; padding: 8px;">Ttd pembimbing</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 40px 0;"></td>
+                <td style="border: 1px solid black; padding: 40px 0;"></td>
+                <td style="border: 1px solid black; padding: 40px 0;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 8px;">{{ $item->created_at->format('d M Y') }}</td>
+                <td style="border: 1px solid black; padding: 8px;">{{ $item->mahasiswa->nama }}</td>
+                <td style="border: 1px solid black; padding: 8px;">{{ $item->mahasiswa->pembimbing->nama }}</td>
+            </tr>
+        </table>
     </div>
-    <table class="no-border">
-        <tr>
-            <td>Nama</td>
-            <td colspan="3">: {{ $bimbingan->first()->mahasiswa->nama }}</td>
-        </tr>
-        <tr>
-            <td>NIM</td>
-            <td colspan="3">: {{ $bimbingan->first()->mahasiswa->nim }}</td>
-        </tr>
-        <tr>
-            <td>Pembimbing</td>
-            <td colspan="3">: {{ $bimbingan->first()->mahasiswa->pembimbing->nama }}</td>
-        </tr>
-        <tr>
-            <td>Judul</td>
-            <td colspan="3">: {{ $bimbingan->first()->mahasiswa->judulSkripsi->judul_skripsi }}</td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td>Pembahasan Mahasiswa</td>
-            <td>{{ $item->pembahasan_mhs }}</td>
-        </tr>
-        <tr>
-            <td>Pembahasan Dosen</td>
-            <td>{{ $item->pembahasan_dosen }}</td>
-        </tr>
-        <tr>
-            <th>Tanggal</th>
-            <td>{{ $item->created_at->format('d M Y') }}</td>
-        </tr>
-    </table>
-    <table class="signature-table">
-        <tr>
-            <td>Mahasiswa</td>
-            <td>Pembimbing</td>
-        </tr>
-        <tr>
-            <td>__________________</td>
-            <td>__________________</td>
-        </tr>
-    </table>
+
     <div class="page-break"></div>
     @endforeach
 </body>

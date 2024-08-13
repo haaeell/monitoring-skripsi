@@ -126,6 +126,12 @@
                                 <div data-i18n="Chat"> Judul Skripsi</div>
                             </a>
                         </li>
+                        <li class="menu-item {{ request()->is('status-ujian*') ? 'active' : '' }}">
+                            <a href="{{ route('status-ujian.index') }}" class="menu-link">
+                                <i class="menu-icon bx bx-chat"></i>
+                                <div data-i18n="Chat"> Status Ujian</div>
+                            </a>
+                        </li>
                     @endif
 
                     @if (Auth::user()->role == 'mahasiswa')

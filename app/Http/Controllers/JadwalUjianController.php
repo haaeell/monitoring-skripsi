@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BimbinganSkripsi;
 use App\Models\JadwalUjian;
+use App\Models\Mahasiswa;
 use App\Models\Pembimbing;
 use App\Models\PengajuanSkripsi;
 use Illuminate\Http\Request;
@@ -27,21 +28,18 @@ class JadwalUjianController extends Controller
             return view('jadwal_ujian.index', compact('penguji', 'judulSkripsi', 'jadwalUjian', 'mahasiswa', 'jumlahBimbingan'));
         }
 
-        if(Auth::user()->role == 'admin' || Auth::user()->role == 'pembimbing') {
+        if (Auth::user()->role == 'admin' || Auth::user()->role == 'pembimbing') {
             $jadwalUjian = JadwalUjian::all();
             return view('jadwal_ujian.index', compact('jadwalUjian'));
         }
     }
     public function setujui(Request $request, $id)
     {
-        $request->validate([
-            'ruangan' => 'required|string|max:255',
-        ]);
+
 
         $jadwal = JadwalUjian::findOrFail($id);
         $jadwal->update([
             'status' => 'diterima',
-            'ruangan' => $request->ruangan,
         ]);
 
         return redirect()->route('jadwal-ujian.index')->with('success', 'Jadwal ujian berhasil disetujui.');
@@ -84,25 +82,23 @@ class JadwalUjianController extends Controller
             'kategori' => 'required|in:Proposal,Pendadaran',
             'tanggal' => 'required|date',
             'waktu' => 'required|date_format:H:i',
-            'ruangan' => 'nullable|string|max:255',
             'penguji1_id' => 'required|exists:pembimbing,id',
             'penguji2_id' => 'required|exists:pembimbing,id',
             'ec' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
             'plagiarsm' => 'nullable|file|mimes:pdf,doc,docx|max:2048',
         ]);
-    
+
         $data = [
             'mahasiswa_id' => Auth::user()->mahasiswa->id,
             'judul' => $request->judul,
             'kategori' => $request->kategori,
             'tanggal' => $request->tanggal,
             'waktu' => $request->waktu,
-            'ruangan' => $request->ruangan,
             'penguji1_id' => $request->penguji1_id,
             'penguji2_id' => $request->penguji2_id,
             'status' => 'pending',
         ];
-    
+
         if ($request->kategori === 'Pendadaran') {
             if ($request->hasFile('ec')) {
                 $data['ec'] = $request->file('ec')->store('files/ec', 'public');
@@ -111,9 +107,9 @@ class JadwalUjianController extends Controller
                 $data['plagiarsm'] = $request->file('plagiarsm')->store('files/plagiarsm', 'public');
             }
         }
-    
+
         JadwalUjian::create($data);
-    
+
         return redirect()->back()->with('success', 'Jadwal ujian berhasil diajukan.');
     }
 
@@ -147,5 +143,38 @@ class JadwalUjianController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function statusUjian(Request $request)
+    {
+        $angkatanFilter = $request->input('angkatan');
+        $pembimbingId = Auth::user()->pembimbing->id;
+
+        $mahasiswaIds = Mahasiswa::where('pembimbing_id', $pembimbingId)->pluck('id');
+        $riwayatJadwalUjian = JadwalUjian::whereIn('mahasiswa_id', $mahasiswaIds);
+
+        if ($angkatanFilter) {
+            $riwayatJadwalUjian->whereHas('mahasiswa', function ($query) use ($angkatanFilter) {
+                $query->where('angkatan', $angkatanFilter);
+            });
+        }
+
+        $ujianMahasiswaBimbingan = $riwayatJadwalUjian->get();
+        $angkatanOptions = Mahasiswa::distinct()->pluck('angkatan');
+
+        return view('pembimbing.status-ujian.index', compact('ujianMahasiswaBimbingan', 'angkatanOptions'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'status' => 'required|in:pending,diterima,ditolak,revisi,lulus,mengulang',
+        ]);
+
+        $jadwalUjian = JadwalUjian::findOrFail($id);
+        $jadwalUjian->status = $validatedData['status'];
+        $jadwalUjian->save();
+
+        return redirect()->route('status-ujian.index')->with('success', 'Status ujian berhasil diperbarui.');
     }
 }

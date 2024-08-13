@@ -2,12 +2,12 @@
 
 @section('content')
     @if (Auth::user()->role == 'mahasiswa')
-        @if ($jumlahBimbingan > 0)
+        @if ($jumlahBimbingan < 7)
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <h4 class="alert-heading"><i class="bi bi-info-circle-fill"></i> Perhatian!</h4>
                 <p>Oops, Anda perlu menyelesaikan bimbingan yang diperlukan sebelum mendaftar seminar. Saat ini, jumlah
                     bimbingan yang Anda lakukan adalah {{ $jumlahBimbingan }}. Pastikan untuk menyelesaikan bimbingan yang
-                    dibutuhkan dengan segera.</p>
+                    dibutuhkan dengan segera. jumlah minimal bimbingan untuk seminar proposal adalah 7 bimbingan.</p>
                 <hr>
                 <p class="mb-0 fw-bold fs-6">Semangat dan terus berusaha!</p>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -89,6 +89,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>NIM</th>
                             <th>Nama Mahasiswa</th>
                             <th>Judul</th>
                             <th>Kategori</th>
@@ -103,6 +104,7 @@
                         @foreach ($jadwalUjian as $index => $jadwal)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
+                                <td>{{ $jadwal->mahasiswa->nim }}</td>
                                 <td>{{ $jadwal->mahasiswa->nama }}</td>
                                 <td>{{ $jadwal->judul }}</td>
                                 <td>{{ $jadwal->kategori }}</td>
@@ -181,10 +183,6 @@
                                     <td>{{ \Carbon\Carbon::parse($jadwal->waktu)->format('H:i') }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Ruangan</th>
-                                    <td>{{ $jadwal->ruangan }}</td>
-                                </tr>
-                                <tr>
                                     <th>Dosen Pembimbing</th>
                                     <td>{{ $jadwal->mahasiswa->pembimbing->user->name }}</td>
                                 </tr>
@@ -252,10 +250,7 @@
                     <form action="{{ route('jadwal-ujian.setujui', $jadwal->id) }}" method="POST">
                         @csrf
                         <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="ruangan{{ $jadwal->id }}" class="form-label">Ruangan</label>
-                                <input type="text" class="form-control" id="ruangan{{ $jadwal->id }}" name="ruangan">
-                            </div>
+                           
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

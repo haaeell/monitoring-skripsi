@@ -14,12 +14,22 @@ class BimbinganController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $mahasiswaBimbingan = Mahasiswa::where('pembimbing_id', Auth::user()->pembimbing->id)->with('user')->get();
-        $judulSkripsi = PengajuanSkripsi::where('mahasiswa_id', $mahasiswaBimbingan->first()->id)->get();
-        
-        return view('mahasiswa.bimbingan.index',compact('mahasiswaBimbingan', 'judulSkripsi'));
+        $angkatanFilter = $request->input('angkatan');
+
+        if ($angkatanFilter) {
+            $mahasiswas = Mahasiswa::with('user')
+                ->where('pembimbing_id', Auth::user()->pembimbing->id)
+                ->where('angkatan', $angkatanFilter)
+                ->get();
+        } else {
+            $mahasiswaBimbingan = Mahasiswa::where('pembimbing_id', Auth::user()->pembimbing->id)->with('user')->get();
+            $judulSkripsi = PengajuanSkripsi::where('mahasiswa_id', $mahasiswaBimbingan->first()->id)->get();
+        }
+
+        $angkatanOptions = Mahasiswa::distinct()->pluck('angkatan');
+        return view('mahasiswa.bimbingan.index', compact('mahasiswaBimbingan', 'judulSkripsi', 'angkatanOptions'));
     }
 
     /**
@@ -81,7 +91,6 @@ class BimbinganController extends Controller
 
             // Response jika berhasil
             return response()->json(['message' => 'Keterangan mahasiswa berhasil diperbarui.']);
-
         } catch (\Exception $e) {
             // Response jika terjadi error
             return response()->json(['error' => 'Gagal memperbarui keterangan mahasiswa: ' . $e->getMessage()], 500);
